@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InteliZap - Extract Browser Token</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+        .container {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+        }
+        h1 {
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        .token-display {
+            background: #000;
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            word-break: break-all;
+            font-size: 12px;
+            min-height: 100px;
+        }
+        .user-info {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        button {
+            background: linear-gradient(135deg, #00ffff 0%, #0080ff 100%);
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3);
+        }
+        .instructions {
+            background: #1a2a1a;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: #2a1a1a;
+            border: 1px solid #ff6600;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .success {
+            color: #00ff00;
+        }
+        .error {
+            color: #ff4444;
+        }
+        .info {
+            color: #00ffff;
+        }
+        pre {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 10px;
+            overflow-x: auto;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 InteliZap Token Extractor</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instructions:</h3>
+            <p>This tool helps you extract JWT tokens from your browser's localStorage for testing the Evolution API endpoints.</p>
+            <ol>
+                <li>Make sure you're logged into your InteliZap application</li>
+                <li>Click the "Extract Token" button below</li>
+                <li>Copy the token and use it in your API requests</li>
+            </ol>
+        </div>
+
+        <div style="text-align: center;">
+            <button onclick="extractToken()">🔍 Extract Token from Browser</button>
+            <button onclick="clearToken()">🗑️ Clear Stored Token</button>
+            <button onclick="testLogin()">🔐 Test Login</button>
+        </div>
+
+        <div id="results"></div>
+
+        <div class="warning">
+            <h3>⚠️ Important Notes:</h3>
+            <ul>
+                <li>Tokens are sensitive information - keep them secure</li>
+                <li>Don't share tokens in public repositories or forums</li>
+                <li>Tokens expire after 7 days by default</li>
+                <li>If no token is found, you need to login first</li>
+            </ul>
+        </div>
+
+        <div class="instructions">
+            <h3>🧪 Example API Usage:</h3>
+            <p>Once you have your token, you can test the Evolution API endpoints:</p>
+            <pre id="curlExamples">
+# Check Evolution status
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+     "http://localhost:3001/api/evolution/status/INSTANCE_NAME"
+
+# Get Evolution groups  
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+     "http://localhost:3001/api/evolution/groups/INSTANCE_NAME?userId=USER_ID"
+
+# Connect to Evolution API
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer YOUR_TOKEN" \
+     -d '{"instanceName":"INSTANCE_NAME","userId":USER_ID}' \
+     "http://localhost:3001/api/evolution/connect"
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3001';
+
+        function extractToken() {
+            const resultsDiv = document.getElementById('results');
+            
+            try {
+                const token = localStorage.getItem('intellizap_token');
+                const userStr = localStorage.getItem('intellizap_user');
+                
+                if (!token) {
+                    resultsDiv.innerHTML = `
+                        <div class="token-display error">
+                            <h3>❌ No Token Found</h3>
+                            <p>No JWT token found in localStorage. Please login first.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let user = null;
+                try {
+                    user = userStr ? JSON.parse(userStr) : null;
+                } catch (e) {
+                    console.warn('Could not parse user data:', e);
+                }
+
+                resultsDiv.innerHTML = `
+                    <div class="token-display success">
+                        <h3>✅ Token Found!</h3>
+                        <p><strong>JWT Token:</strong></p>
+                        <div style="background: #000; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                            <code>${token}</code>
+                        </div>
+                    </div>
+                    
+                    ${user ? `
+                    <div class="user-info">
+                        <h3>👤 User Information:</h3>
+                        <p><strong>ID:</strong> ${user.id}</p>
+                        <p><strong>Name:</strong> ${user.nome}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Instance:</strong> ${user.instancia || user.nome}</p>
+                    </div>
+                    ` : ''}
+                `;
+
+                // Update curl examples with real data
+                if (user) {
+                    const curlExamples = document.getElementById('curlExamples');
+                    const instanceName = user.instancia || user.nome;
+                    const userId = user.id;
+                    
+                    curlExamples.textContent = `
+# Check Evolution status
+curl -H "Authorization: Bearer ${token}" \\
+     "${API_BASE_URL}/api/evolution/status/${instanceName}"
+
+# Get Evolution groups  
+curl -H "Authorization: Bearer ${token}" \\
+     "${API_BASE_URL}/api/evolution/groups/${instanceName}?userId=${userId}"
+
+# Connect to Evolution API
+curl -X POST \\
+     -H "Content-Type: application/json" \\
+     -H "Authorization: Bearer ${token}" \\
+     -d '{"instanceName":"${instanceName}","userId":${userId}}' \\
+     "${API_BASE_URL}/api/evolution/connect"
+                    `.trim();
+                }
+
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="token-display error">
+                        <h3>❌ Error</h3>
+                        <p>Error extracting token: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function clearToken() {
+            localStorage.removeItem('intellizap_token');
+            localStorage.removeItem('intellizap_user');
+            
+            document.getElementById('results').innerHTML = `
+                <div class="token-display info">
+                    <h3>🗑️ Token Cleared</h3>
+                    <p>All stored authentication data has been removed from localStorage.</p>
+                </div>
+            `;
+        }
+
+        async function testLogin() {
+            const resultsDiv = document.getElementById('results');
+            
+            resultsDiv.innerHTML = `
+                <div class="token-display info">
+                    <h3>🔄 Testing Login...</h3>
+                    <p>Attempting to login with test credentials...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'teste@intelizap.com',
+                        senha: '123456'
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.token) {
+                    const token = data.data.token;
+                    const user = data.data.user;
+                    
+                    // Store in localStorage
+                    localStorage.setItem('intellizap_token', token);
+                    localStorage.setItem('intellizap_user', JSON.stringify(user));
+                    
+                    resultsDiv.innerHTML = `
+                        <div class="token-display success">
+                            <h3>✅ Login Successful!</h3>
+                            <p>Test credentials worked. Token has been stored in localStorage.</p>
+                            <button onclick="extractToken()" style="margin-top: 10px;">Extract Token Now</button>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.message || 'Login failed');
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="token-display error">
+                        <h3>❌ Login Failed</h3>
+                        <p>Error: ${error.message}</p>
+                        <p><strong>Make sure:</strong></p>
+                        <ul>
+                            <li>Your backend server is running on ${API_BASE_URL}</li>
+                            <li>The test user exists in the database</li>
+                            <li>Database connection is working</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-extract token on page load if available
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('intellizap_token');
+            if (token) {
+                extractToken();
+            }
+        });
+    </script>
+</body>
+</html>

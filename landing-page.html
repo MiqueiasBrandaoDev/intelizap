@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelliZapp.IA - Transforme suas Conversas em Insights Inteligentes</title>
+    <meta name="description" content="Automatize resumos de grupos WhatsApp com Inteligência Artificial. Economize tempo e nunca perca informações importantes.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        secondary: '#059669',
+                        accent: '#34d399',
+                        cyber: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-button': 'pulse 2s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .cyber-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .cyber-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .cyber-text {
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .dark {
+            background: #0f172a;
+            color: #f8fafc;
+        }
+        .hero-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(16, 185, 129, 0.15) 1px, transparent 0);
+            background-size: 50px 50px;
+        }
+    </style>
+</head>
+<body class="dark min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold cyber-text">🤖 IntelliZapp.IA</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#recursos" class="text-gray-300 hover:text-white transition-colors">Recursos</a>
+                        <a href="#beneficios" class="text-gray-300 hover:text-white transition-colors">Benefícios</a>
+                        <a href="#preco" class="text-gray-300 hover:text-white transition-colors">Preço</a>
+                        <a href="#contato" class="text-gray-300 hover:text-white transition-colors">Contato</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.open('https://app.intellizapp.com.br/login', '_blank')" 
+                            class="text-gray-300 hover:text-white transition-colors">
+                        Entrar
+                    </button>
+                    <button onclick="window.open('https://payment.ticto.app/O5035E724', '_blank')" 
+                            class="cyber-gradient text-white px-6 py-2 rounded-full font-semibold hover:opacity-90 transition-opacity animate-pulse-button">
+                        3 Dias Grátis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center hero-pattern">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-900/20 to-slate-900/80"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" style="margin-top: 60px;">
+            <div class="animate-float">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
+                    <span class="cyber-text">Transforme</span><br>
+                    <span class="text-white">suas Conversas em</span><br>
+                    <span class="cyber-text">Insights Inteligentes</span>
+                </h1>
+            </div>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+                Nunca mais perca informações importantes dos seus grupos WhatsApp. 
+                Nossa IA gera resumos automáticos e inteligentes para você focar no que realmente importa.
+            </p>
+            <div class="flex justify-center mb-12">
+                <button onclick="window.open('https://payment.ticto.app/O5035E724', '_blank')" 
+                        class="cyber-gradient text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-opacity animate-pulse-button">
+                    🚀 3 Dias Grátis - Começar Agora
+                </button>
+            </div>
+            <div class="flex items-center justify-center space-x-8 text-gray-400">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span>Sem configuração complexa</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span>Fácil configuração</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span>Suporte 24/7</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="py-20 bg-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                    <span class="text-red-400">Cansado</span> de perder informações importantes?
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Grupos de WhatsApp movimentados podem gerar centenas de mensagens por dia. 
+                    Como acompanhar tudo sem perder tempo?
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="cyber-card p-8 rounded-2xl text-center">
+                    <div class="text-4xl mb-4">😰</div>
+                    <h3 class="text-xl font-bold mb-4 text-red-400">Sobrecarga de Informação</h3>
+                    <p class="text-gray-300">
+                        Centenas de mensagens por dia tornam impossível acompanhar tudo que é importante.
+                    </p>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl text-center">
+                    <div class="text-4xl mb-4">⏰</div>
+                    <h3 class="text-xl font-bold mb-4 text-red-400">Tempo Perdido</h3>
+                    <p class="text-gray-300">
+                        Horas gastas lendo mensagens irrelevantes quando você deveria focar no que importa.
+                    </p>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl text-center">
+                    <div class="text-4xl mb-4">📉</div>
+                    <h3 class="text-xl font-bold mb-4 text-red-400">Decisões Lentas</h3>
+                    <p class="text-gray-300">
+                        Informações importantes se perdem no meio da conversa, atrasando decisões críticas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                    A <span class="cyber-text">Solução Inteligente</span> que você precisa
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Nossa IA analisa suas conversas e entrega apenas o que realmente importa, 
+                    automaticamente, sem você precisar fazer nada.
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="space-y-8">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 cyber-gradient rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2 text-white">Conecte seus Grupos</h3>
+                                <p class="text-gray-300">
+                                    Adicione seus grupos WhatsApp em segundos. Nossa integração é simples e segura.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 cyber-gradient rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                                2
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2 text-white">IA Analisa Tudo</h3>
+                                <p class="text-gray-300">
+                                    Nossa inteligência artificial lê e compreende cada mensagem, identificando o que é relevante.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 cyber-gradient rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                                3
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2 text-white">Receba Resumos Automáticos</h3>
+                                <p class="text-gray-300">
+                                    Resumos inteligentes e organizados são enviados automaticamente no horário que você escolher.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl">
+                    <div class="bg-slate-700 rounded-lg p-6 mb-4">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-bold">IA</span>
+                            </div>
+                            <span class="text-white font-semibold">Resumo Diário - Grupo Vendas</span>
+                        </div>
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-slate-600 p-3 rounded">
+                                <strong class="text-cyan-400">📊 Principais Discussões:</strong>
+                                <p class="text-gray-300 mt-1">• Nova estratégia de vendas Q1 aprovada<br>• Meta mensal batida: R$ 150k (120% do objetivo)</p>
+                            </div>
+                            <div class="bg-slate-600 p-3 rounded">
+                                <strong class="text-yellow-400">💡 Pontos Importantes:</strong>
+                                <p class="text-gray-300 mt-1">• Discussões sobre metas mensais<br>• Estratégias de vendas Q1</p>
+                            </div>
+                            <div class="bg-slate-600 p-3 rounded">
+                                <strong class="text-green-400">📈 Atividades:</strong>
+                                <p class="text-gray-300 mt-1">• Mensagens organizadas por relevância<br>• Informações condensadas automaticamente</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm text-center">
+                        📱 Resumos enviados diretamente no WhatsApp no horário escolhido por você
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="recursos" class="py-20 bg-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                    <span class="cyber-text">Recursos</span> que fazem a diferença
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Desenvolvido especificamente para profissionais que precisam de eficiência e resultados.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="cyber-card p-8 rounded-2xl hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold mb-4 cyber-text">IA Avançada</h3>
+                    <p class="text-gray-300">
+                        Algoritmos de última geração que compreendem contexto, sentimentos e prioridades das suas conversas.
+                    </p>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-bold mb-4 cyber-text">Automação Total</h3>
+                    <p class="text-gray-300">
+                        Configure uma vez e receba resumos automáticos. Sem necessidade de intervenção manual.
+                    </p>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">📝</div>
+                    <h3 class="text-xl font-bold mb-4 cyber-text">Resumos Automáticos</h3>
+                    <p class="text-gray-300">
+                        Todas as mensagens do grupo são processadas e organizadas automaticamente em resumos completos.
+                    </p>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold mb-4 cyber-text">Dashboard Analítico</h3>
+                    <p class="text-gray-300">
+                        Visualize métricas, tendências e insights dos seus grupos em tempo real.
+                    </p>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">🔒</div>
+                    <h3 class="text-xl font-bold mb-4 cyber-text">Segurança Total</h3>
+                    <p class="text-gray-300">
+                        Seus dados são processados com criptografia de ponta e nunca armazenados desnecessariamente.
+                    </p>
+                </div>
+                <div class="cyber-card p-8 rounded-2xl hover:scale-105 transition-transform">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold mb-4 cyber-text">Multi-Grupos</h3>
+                    <p class="text-gray-300">
+                        Gerencie até 3 grupos simultaneamente com resumos organizados e independentes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="beneficios" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                    Transforme sua <span class="cyber-text">Produtividade</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Resultados comprovados que nossos usuários alcançam em média após 30 dias de uso.
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="cyber-gradient rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold text-white">85%</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Menos Tempo</h3>
+                    <p class="text-gray-300">
+                        Redução no tempo gasto lendo mensagens de grupos
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="cyber-gradient rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold text-white">3x</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Mais Foco</h3>
+                    <p class="text-gray-300">
+                        Aumento na capacidade de focar em tarefas importantes
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="cyber-gradient rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold text-white">92%</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Zero Perda</h3>
+                    <p class="text-gray-300">
+                        Das informações importantes são capturadas e resumidas
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="cyber-gradient rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold text-white">2h</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-white">Por Dia</h3>
+                    <p class="text-gray-300">
+                        Tempo economizado que pode ser usado em atividades produtivas
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="preco" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                    <span class="cyber-text">Investimento</span> que se paga
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Teste GRÁTIS por 3 dias e veja como pode economizar horas da sua semana.
+                </p>
+            </div>
+            <div class="max-w-lg mx-auto">
+                <div class="cyber-card p-8 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-2 rounded-bl-2xl font-bold text-sm">
+                        🎉 3 DIAS GRÁTIS
+                    </div>
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-4 cyber-text">Plano Premium</h3>
+                        <div class="mb-2">
+                            <span class="text-2xl font-bold text-green-400">3 DIAS GRÁTIS</span>
+                        </div>
+                        <div class="mb-4">
+                            <span class="text-3xl font-bold text-white">R$ 197</span>
+                            <span class="text-gray-400">/mês após o período gratuito</span>
+                        </div>
+                        <p class="text-gray-300">
+                            Teste todos os recursos sem compromisso
+                        </p>
+                    </div>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-white">Até 3 grupos WhatsApp</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-white">315 IntelliCoins mensais</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-white">Resumos automáticos com IA</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-white">Agendamento personalizado</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-white">Dashboard analítico completo</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-400">✓</span>
+                            <span class="text-white">Suporte prioritário 24/7</span>
+                        </div>
+                    </div>
+                    <button onclick="window.open('https://payment.ticto.app/O5035E724', '_blank')" 
+                            class="w-full cyber-gradient text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity animate-pulse-button">
+                        🚀 Começar Teste Grátis
+                    </button>
+                    <p class="text-center text-gray-400 text-sm mt-4">
+                        🎉 3 dias grátis • 🔒 Sem cobrança inicial • ⚡ Ativação imediata
+                    </p>
+                </div>
+            </div>
+            ddsd
+            
+            <div class="text-center mt-12">
+                <div class="inline-flex items-center space-x-4 bg-slate-800 rounded-full px-6 py-3">
+                    <span class="text-gray-300">🎉 3 dias grátis</span>
+                    <span class="text-gray-600">•</span>
+                    <span class="text-gray-300">🚀 Setup em 5 minutos</span>
+                    <span class="text-gray-600">•</span>
+                    <span class="text-gray-300">🎯 Resultados no 2º dia</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-slate-800 to-slate-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                Pronto para <span class="cyber-text">revolucionar</span><br>
+                sua produtividade?
+            </h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Junte-se a centenas de profissionais que já transformaram 
+                a forma como acompanham suas conversas importantes.
+            </p>
+            <div class="flex justify-center">
+                <button onclick="window.open('https://payment.ticto.app/O5035E724', '_blank')" 
+                        class="cyber-gradient text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-opacity animate-pulse-button">
+                    🎯 Teste Grátis por 3 Dias
+                </button>
+            </div>
+            <div class="mt-8 text-gray-400">
+                <p>🎉 3 dias grátis • ⚡ Ativação imediata • 🔒 100% seguro</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato" class="bg-slate-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl font-bold cyber-text">🤖 IntelliZapp.IA</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Transforme suas conversas WhatsApp em insights inteligentes 
+                        com o poder da Inteligência Artificial.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="mailto:suporte@intellizapp.com.br" class="text-gray-400 hover:text-white transition-colors">
+                            📧 suporte@intellizapp.com.br
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Produto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#recursos" class="hover:text-white transition-colors">Recursos</a></li>
+                        <li><a href="#beneficios" class="hover:text-white transition-colors">Benefícios</a></li>
+                        <li><a href="#preco" class="hover:text-white transition-colors">Preços</a></li>
+                        <li><a href="https://app.intellizapp.com.br" class="hover:text-white transition-colors">Login</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Contato</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="mailto:suporte@intellizapp.com.br" class="hover:text-white transition-colors">📧 Suporte</a></li>
+                        <li><a href="https://wa.me/5511999999999" class="hover:text-white transition-colors">📱 WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 IntelliZapp.IA. Todos os direitos reservados.</p>
+                <p class="mt-2">Transformando conversas em insights desde 2025 🚀</p>
+            </div>
+        </footer>
+    </section>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                navbar.classList.add('bg-slate-900/95');
+            } else {
+                navbar.classList.remove('bg-slate-900/95');
+            }
+        });
+    </script>
+</body>
+</html>

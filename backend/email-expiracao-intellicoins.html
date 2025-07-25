@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelliZapp.IA - IntelliCoins Expirados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .expiration-message {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .expiration-title {
+            font-size: 24px;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        
+        .expiration-text {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        
+        .warning-section {
+            background-color: #fff5f5;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .warning-title {
+            font-size: 20px;
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .consequences-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .consequences-list li {
+            padding: 8px 0;
+            font-size: 15px;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .consequences-list li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+            font-size: 16px;
+        }
+        
+        .action-section {
+            background-color: #e8f4fd;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .action-title {
+            font-size: 18px;
+            color: #2980b9;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .action-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            counter-reset: step;
+        }
+        
+        .action-list li {
+            padding: 10px 0;
+            font-size: 15px;
+            color: #555;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .action-list li:before {
+            content: counter(step);
+            counter-increment: step;
+            position: absolute;
+            left: 0;
+            background-color: #3498db;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .renewal-info {
+            background-color: #fff3cd;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .renewal-title {
+            font-size: 18px;
+            color: #856404;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .renewal-text {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .support-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #6c757d;
+            text-align: center;
+        }
+        
+        .support-title {
+            font-size: 16px;
+            color: #495057;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .support-text {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .header,
+            .content,
+            .footer {
+                padding: 20px 15px;
+            }
+            
+            .expiration-title {
+                font-size: 20px;
+            }
+            
+            .warning-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">🤖 IntelliZapp.IA</div>
+            <div class="header-subtitle">Inteligência Artificial para WhatsApp</div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Expiration Message -->
+            <div class="expiration-message">
+                <h1 class="expiration-title">⏰ IntelliCoins Expirados</h1>
+                <p class="expiration-text">
+                    Seus IntelliCoins expiraram e não será possível gerar novos resumos 
+                    até a próxima renovação automática.
+                </p>
+            </div>
+            
+            <!-- Warning Section -->
+            <div class="warning-section">
+                <h2 class="warning-title">
+                    <span>🚫</span>
+                    O que isso significa?
+                </h2>
+                <ul class="consequences-list">
+                    <li>Novos resumos não serão gerados automaticamente</li>
+                    <li>Grupos continuam sendo monitorados</li>
+                    <li>Mensagens ficam armazenadas para o próximo ciclo</li>
+                    <li>Histórico anterior permanece disponível</li>
+                </ul>
+            </div>
+            
+            <!-- Action Section -->
+            <div class="action-section">
+                <h2 class="action-title">
+                    <span>📋</span>
+                    Como verificar a renovação
+                </h2>
+                <ol class="action-list">
+                    <li>Acesse sua conta na plataforma IntelliZapp.IA</li>
+                    <li>Vá na seção "Meu Plano"</li>
+                    <li>Verifique a data da próxima renovação</li>
+                    <li>Aguarde a renovação automática dos seus IntelliCoins</li>
+                </ol>
+            </div>
+            
+            <!-- Renewal Info -->
+            <div class="renewal-info">
+                <h2 class="renewal-title">🔄 Renovação Automática</h2>
+                <p class="renewal-text">
+                    Seus IntelliCoins são renovados automaticamente todo mês na data 
+                    definida em sua conta. Não é necessária nenhuma ação da sua parte.
+                </p>
+                <div style="background-color: white; border-radius: 8px; padding: 15px; margin-top: 15px; text-align: center;">
+                    <p style="font-size: 16px; color: #856404; font-weight: 600; margin-bottom: 5px;">
+                        📅 Acesse o sistema para ver sua data de renovação
+                    </p>
+                    <p style="font-size: 14px; color: #7f8c8d;">
+                        Meu Plano > IntelliCoins Disponíveis
+                    </p>
+                </div>
+            </div>
+            
+            <!-- CTA Button -->
+            <div class="cta-section">
+                <a href="https://app.intellizapp.com.br" class="cta-button">
+                    🔗 Acessar Minha Conta
+                </a>
+            </div>
+            
+            <!-- Support Section -->
+            <div class="support-section">
+                <h3 class="support-title">💬 Precisa de Ajuda?</h3>
+                <p class="support-text">
+                    Nossa equipe está sempre disponível para te ajudar através do e-mail 
+                    <strong>suporte@intellizapp.com.br</strong> ou respondendo diretamente este e-mail.
+                </p>
+            </div>
+            
+            <!-- Additional Info -->
+            <div style="margin-top: 30px; padding: 20px; background-color: #e8f8f5; border-radius: 10px; border-left: 4px solid #27ae60;">
+                <h3 style="color: #27ae60; margin-bottom: 15px; font-size: 18px;">
+                    ✅ Lembre-se
+                </h3>
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                    <li style="padding: 6px 0; font-size: 14px; color: #555; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #27ae60;">•</span>
+                        Seus grupos continuam conectados
+                    </li>
+                    <li style="padding: 6px 0; font-size: 14px; color: #555; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #27ae60;">•</span>
+                        Mensagens ficam armazenadas
+                    </li>
+                    <li style="padding: 6px 0; font-size: 14px; color: #555; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #27ae60;">•</span>
+                        Renovação é automática
+                    </li>
+                    <li style="padding: 6px 0; font-size: 14px; color: #555; position: relative; padding-left: 20px;">
+                        <span style="position: absolute; left: 0; color: #27ae60;">•</span>
+                        Histórico anterior disponível
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Important Note -->
+            <div style="background-color: #fff3cd; border-radius: 10px; padding: 20px; margin: 30px 0; border-left: 4px solid #ffc107; text-align: center;">
+                <p style="font-size: 16px; color: #856404; font-weight: 600; margin-bottom: 10px;">
+                    📱 Mantenha-se Conectado
+                </p>
+                <p style="font-size: 14px; color: #856404;">
+                    Assim que seus IntelliCoins forem renovados, os resumos voltarão 
+                    a ser gerados automaticamente nos horários configurados.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-text">
+                Seus IntelliCoins serão renovados automaticamente. Acesse o sistema para ver quando!
+            </p>
+            <p style="font-size: 14px; margin: 15px 0;">
+                📧 <strong>suporte@intellizapp.com.br</strong> | 🌐 <strong>app.intellizapp.com.br</strong>
+            </p>
+            <p style="font-size: 12px; opacity: 0.6; margin-top: 20px;">
+                © 2025 IntelliZapp.IA - Todos os direitos reservados<br>
+                Dúvidas? Responda este e-mail ou entre em contato pelo suporte.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

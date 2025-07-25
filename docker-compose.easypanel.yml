@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  database:
+    image: mysql:8.0
+    container_name: intellizapp-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-intellizapp_root_2025}
+      MYSQL_DATABASE: ${DB_NAME:-intellizap}
+      MYSQL_USER: ${DB_USER:-intellizapp_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-intellizapp_pass_2025}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - intellizapp-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.easypanel
+    container_name: intellizapp-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-intellizap}
+      DB_USER: ${DB_USER:-intellizapp_user}
+      DB_PASSWORD: ${DB_PASSWORD:-intellizapp_pass_2025}
+      JWT_SECRET: ${JWT_SECRET:-intellizapp_jwt_secret_2025_very_secure}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      EVOLUTION_API_URL: ${EVOLUTION_API_URL:-https://evolutionapi-evolutionapi.ac69mn.easypanel.host}
+      EVOLUTION_API_KEY: ${EVOLUTION_API_KEY:-o43h6kACBsSlJiiUCbTkdMXrj9FYEe0c}
+      PORT: 3001
+      CORS_ORIGIN: "*"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - intellizapp-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
+      timeout: 10s
+      retries: 3
+      interval: 30s
+      start_period: 60s
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.easypanel
+      args:
+        VITE_API_URL: ""
+    container_name: intellizapp-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - intellizapp-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
+      timeout: 10s
+      retries: 3
+      interval: 30s
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  intellizapp-network:
+    driver: bridge
