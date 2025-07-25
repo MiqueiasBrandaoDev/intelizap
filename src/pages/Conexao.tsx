@@ -152,39 +152,31 @@ const Conexao = () => {
 
     try {
       const data = await apiService.getEvolutionStatus(instance);
-        console.log('📱 Status response:', data);
+      console.log('📱 Status response:', data);
+      
+      if (data.connected || data.state === 'open') {
+        setStatus(prev => ({
+          ...prev,
+          connected: true,
+          qrCode: null,
+          error: null,
+          loading: false
+        }));
         
-        if (data.connected || data.state === 'open') {
-          setStatus(prev => ({
-            ...prev,
-            connected: true,
-            qrCode: null,
-            error: null,
-            loading: false
-          }));
-          
-          if (timerInterval) {
-            clearInterval(timerInterval);
-            setTimerInterval(null);
-          }
-          
-          toast({
-            title: "WhatsApp conectado!",
-            description: "Sua instância já está ativa e conectada."
-          });
-        } else {
-          setStatus(prev => ({
-            ...prev,
-            connected: false,
-            loading: false
-          }));
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          setTimerInterval(null);
         }
+        
+        toast({
+          title: "WhatsApp conectado!",
+          description: "Sua instância já está ativa e conectada."
+        });
       } else {
         setStatus(prev => ({
           ...prev,
           connected: false,
-          loading: false,
-          error: 'Erro ao verificar status da instância'
+          loading: false
         }));
       }
     } catch (error) {
@@ -205,19 +197,19 @@ const Conexao = () => {
       setStatus(prev => ({ ...prev, loading: true }));
 
       await apiService.disconnectEvolution(status.instanceName);
-        setStatus({
-          connected: false,
-          instanceName: null,
-          qrCode: null,
-          loading: false,
-          error: null
-        });
+      
+      setStatus({
+        connected: false,
+        instanceName: null,
+        qrCode: null,
+        loading: false,
+        error: null
+      });
 
-        toast({
-          title: "WhatsApp desconectado",
-          description: "Sua instância foi desconectada com sucesso."
-        });
-      }
+      toast({
+        title: "WhatsApp desconectado",
+        description: "Sua instância foi desconectada com sucesso."
+      });
     } catch (error) {
       setStatus(prev => ({ ...prev, loading: false }));
       toast({
