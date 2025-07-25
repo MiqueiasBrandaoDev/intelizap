@@ -51,16 +51,17 @@ RUN npm ci --only=production --silent && npm cache clean --force
 COPY backend/src/ ./src/
 COPY backend/*.html ./
 
-# Configuração do Nginx
-COPY nginx.easypanel.conf /etc/nginx/conf.d/default.conf
+# Configuração do Nginx (substituir a configuração padrão)
+COPY nginx.minimal.conf /etc/nginx/nginx.conf
 
 # Criar usuário não-root
 RUN addgroup -g 1001 -S appuser && \
     adduser -S appuser -u 1001 -G appuser
 
 # Criar diretórios nginx e ajustar permissões
-RUN mkdir -p /var/cache/nginx /var/run/nginx /var/log/nginx
-RUN chown -R appuser:appuser /app /usr/share/nginx/html /var/cache/nginx /var/run /var/log/nginx
+RUN mkdir -p /var/cache/nginx /var/run/nginx /var/log/nginx /var/lib/nginx/logs
+RUN touch /var/log/nginx/access.log /var/log/nginx/error.log
+RUN chown -R appuser:appuser /app /usr/share/nginx/html /var/cache/nginx /var/run/nginx /var/log/nginx /var/lib/nginx
 RUN chmod -R 755 /usr/share/nginx/html
 
 # Script de inicialização
@@ -69,7 +70,10 @@ COPY <<EOF /app/start.sh
 # Iniciar backend em background
 cd /app/backend && node src/server.js &
 
-# Iniciar nginx em foreground
+# Aguardar um pouco para o backend iniciar
+sleep 2
+
+# Iniciar nginx em foreground (sem daemon, com usuário atual)
 exec nginx -g 'daemon off;'
 EOF
 
