@@ -51,7 +51,8 @@ RUN npm ci --only=production --silent && npm cache clean --force
 COPY backend/src/ ./src/
 COPY backend/*.html ./
 
-# Configuração do Nginx (substituir a configuração padrão)
+# Configuração do Nginx (limpar configs antigas e usar nova)
+RUN rm -f /etc/nginx/conf.d/default.conf /etc/nginx/sites-enabled/default
 COPY nginx.minimal.conf /etc/nginx/nginx.conf
 
 # Criar usuário não-root
