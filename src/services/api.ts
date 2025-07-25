@@ -52,14 +52,14 @@ class ApiService {
 
   // Auth endpoints
   async login(email: string, senha: string): Promise<ApiResponse<{ user: Usuario; token: string }>> {
-    return this.request('/api/auth/login', {
+    return this.request('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, senha }),
     });
   }
 
   async register(userData: CreateUsuarioData): Promise<ApiResponse<{ user: Usuario; token: string }>> {
-    return this.request('/api/auth/register', {
+    return this.request('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
     });
@@ -67,54 +67,54 @@ class ApiService {
 
   // Usuario endpoints
   async getUser(id: number): Promise<ApiResponse<Usuario>> {
-    return this.request(`/api/usuarios/${id}`);
+    return this.request(`/usuarios/${id}`);
   }
 
   async updateUser(id: number, data: UpdateUsuarioData): Promise<ApiResponse<Usuario>> {
-    return this.request(`/api/usuarios/${id}`, {
+    return this.request(`/usuarios/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async changePassword(id: number, currentPassword: string, newPassword: string): Promise<ApiResponse<void>> {
-    return this.request(`/api/usuarios/${id}/password`, {
+    return this.request(`/usuarios/${id}/password`, {
       method: 'PUT',
       body: JSON.stringify({ currentPassword, newPassword }),
     });
   }
 
   async deleteUser(id: number): Promise<ApiResponse<void>> {
-    return this.request(`/api/usuarios/${id}`, {
+    return this.request(`/usuarios/${id}`, {
       method: 'DELETE',
     });
   }
 
   // Grupos endpoints
   async getGrupos(usuarioId: number, page: number = 1, limit: number = 50): Promise<PaginatedResponse<Grupo>> {
-    return this.request(`/api/grupos?usuario_id=${usuarioId}&page=${page}&limit=${limit}`);
+    return this.request(`/grupos?usuario_id=${usuarioId}&page=${page}&limit=${limit}`);
   }
 
   async getGrupo(id: number): Promise<ApiResponse<GrupoWithMensagens>> {
-    return this.request(`/api/grupos/${id}`);
+    return this.request(`/grupos/${id}`);
   }
 
   async createGrupo(data: CreateGrupoData): Promise<ApiResponse<Grupo>> {
-    return this.request('/api/grupos', {
+    return this.request('/grupos', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async updateGrupo(id: number, data: Partial<CreateGrupoData>): Promise<ApiResponse<Grupo>> {
-    return this.request(`/api/grupos/${id}`, {
+    return this.request(`/grupos/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteGrupo(id: number): Promise<ApiResponse<void>> {
-    return this.request(`/api/grupos/${id}`, {
+    return this.request(`/grupos/${id}`, {
       method: 'DELETE',
     });
   }
@@ -125,18 +125,18 @@ class ApiService {
     page: number = 1, 
     limit: number = 100
   ): Promise<PaginatedResponse<Mensagem>> {
-    return this.request(`/api/mensagens?grupo_id=${grupoId}&page=${page}&limit=${limit}`);
+    return this.request(`/mensagens?grupo_id=${grupoId}&page=${page}&limit=${limit}`);
   }
 
   async createMensagem(data: CreateMensagemData): Promise<ApiResponse<Mensagem>> {
-    return this.request('/api/mensagens', {
+    return this.request('/mensagens', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
   async deleteMensagem(id: number): Promise<ApiResponse<void>> {
-    return this.request(`/api/mensagens/${id}`, {
+    return this.request(`/mensagens/${id}`, {
       method: 'DELETE',
     });
   }
@@ -151,7 +151,7 @@ class ApiService {
     grupoId?: number,
     status?: string
   ): Promise<PaginatedResponse<ResumoWithGrupo>> {
-    let endpoint = `/api/resumos?usuario_id=${usuarioId}&page=${page}&limit=${limit}`;
+    let endpoint = `/resumos?usuario_id=${usuarioId}&page=${page}&limit=${limit}`;
     
     if (dataInicio) endpoint += `&data_inicio=${dataInicio}`;
     if (dataFim) endpoint += `&data_fim=${dataFim}`;
@@ -162,7 +162,7 @@ class ApiService {
   }
 
   async createResumo(data: CreateResumoData): Promise<ApiResponse<Resumo>> {
-    return this.request('/api/resumos', {
+    return this.request('/resumos', {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -177,24 +177,24 @@ class ApiService {
 
   // Dashboard endpoints
   async getDashboardStats(usuarioId: number): Promise<ApiResponse<DashboardStats>> {
-    return this.request(`/api/dashboard/stats?usuario_id=${usuarioId}`);
+    return this.request(`/dashboard/stats?usuario_id=${usuarioId}`);
   }
 
   async getRecentActivity(usuarioId: number, limit: number = 5): Promise<ApiResponse<RecentActivity[]>> {
-    return this.request(`/api/dashboard/activity?usuario_id=${usuarioId}&limit=${limit}`);
+    return this.request(`/dashboard/activity?usuario_id=${usuarioId}&limit=${limit}`);
   }
 
   async getSystemInsights(usuarioId: number): Promise<ApiResponse<any>> {
-    return this.request(`/api/dashboard/insights?usuario_id=${usuarioId}`);
+    return this.request(`/dashboard/insights?usuario_id=${usuarioId}`);
   }
 
   // Evolution API endpoints
   async getEvolutionGroups(instanceName: string, userId: number): Promise<ApiResponse<any[]>> {
-    return this.request(`/api/evolution/groups/${instanceName}?userId=${userId}`);
+    return this.request(`/evolution/groups/${instanceName}?userId=${userId}`);
   }
 
   async getEvolutionStatus(instanceName: string): Promise<ApiResponse<any>> {
-    return this.request(`/api/evolution/status/${instanceName}`);
+    return this.request(`/evolution/status/${instanceName}`);
   }
 
   // Health check
