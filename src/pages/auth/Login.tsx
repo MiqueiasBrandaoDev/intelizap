@@ -137,12 +137,14 @@ const Login = () => {
             
             <div className="text-center text-sm text-muted-foreground">
               Não tem uma conta?{' '}
-              <Link 
-                to="/auth/register" 
+              <a 
+                href="https://intellizapp.com.br" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-primary hover:text-primary/80 transition-colors font-medium"
               >
                 Cadastre-se
-              </Link>
+              </a>
             </div>
           </div>
         </CardContent>
