@@ -197,6 +197,19 @@ class ApiService {
     return this.request(`/evolution/status/${instanceName}`);
   }
 
+  async connectEvolution(instanceName: string, userId: number): Promise<ApiResponse<any>> {
+    return this.request('/evolution/connect', {
+      method: 'POST',
+      body: JSON.stringify({ instanceName, userId }),
+    });
+  }
+
+  async disconnectEvolution(instanceName: string): Promise<ApiResponse<any>> {
+    return this.request(`/evolution/disconnect/${instanceName}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Health check
   async health(): Promise<{ status: string; timestamp: string }> {
     return this.request('/health');

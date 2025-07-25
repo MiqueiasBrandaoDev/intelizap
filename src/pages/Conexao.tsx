@@ -15,6 +15,7 @@ import {
   Clock
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { apiService } from '@/services/api';
 
 interface ConnectionStatus {
   connected: boolean;
@@ -93,23 +94,7 @@ const Conexao = () => {
 
     try {
       // Conectar WhatsApp usando instância do usuário
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/evolution/connect`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('intellizapp_token')}`
-        },
-        body: JSON.stringify({ 
-          instanceName: status.instanceName,
-          userId: user?.id 
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Falha ao conectar com a API');
-      }
-
-      const data = await response.json();
+      const data = await apiService.connectEvolution(status.instanceName, user!.id);
 
       // Check if already connected
       if (data.instance && data.instance.state === 'open') {
@@ -166,14 +151,7 @@ const Conexao = () => {
     if (!instance) return;
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/evolution/status/${instance}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('intellizapp_token')}`
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
+      const data = await apiService.getEvolutionStatus(instance);
         console.log('📱 Status response:', data);
         
         if (data.connected || data.state === 'open') {
@@ -226,14 +204,7 @@ const Conexao = () => {
     try {
       setStatus(prev => ({ ...prev, loading: true }));
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/evolution/disconnect/${status.instanceName}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('intellizapp_token')}`
-        }
-      });
-
-      if (response.ok) {
+      await apiService.disconnectEvolution(status.instanceName);
         setStatus({
           connected: false,
           instanceName: null,
