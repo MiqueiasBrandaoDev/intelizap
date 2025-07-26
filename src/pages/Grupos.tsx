@@ -29,7 +29,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useGrupos } from '@/hooks/useGrupos';
-import { useEvolutionGroups } from '@/hooks/useEvolutionGroups';
+import { useEvolutionGroupsContext } from '@/contexts/EvolutionGroupsContext';
 import { Grupo } from '@/types/database';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -39,9 +39,11 @@ const Grupos = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [syncing, setSyncing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [grupoNome, setGrupoNome] = useState('');
-  const [grupoIdExterno, setGrupoIdExterno] = useState('');
-  const [selectedEvolutionGroup, setSelectedEvolutionGroup] = useState<any>(null);
+  const [selectedEvolutionGroup, setSelectedEvolutionGroup] = useState<{
+    nome_grupo: string;
+    grupo_id_externo: string;
+    participantes: number;
+  } | null>(null);
   const [evolutionSearchTerm, setEvolutionSearchTerm] = useState('');
   
   
@@ -58,14 +60,13 @@ const Grupos = () => {
     isCreating
   } = useGrupos();
 
-  // Buscar grupos da Evolution API - usar o nome do usuário como instância
-  const instanceName = user?.nome || 'Miqueias';
+  // Usar contexto global para grupos da Evolution API
   const {
     evolutionGroups,
     isLoading: evolutionLoading,
     error: evolutionError,
     refetch: refetchEvolutionGroups
-  } = useEvolutionGroups(instanceName);
+  } = useEvolutionGroupsContext();
 
   const filteredGroups = grupos.filter(grupo =>
     grupo.nome_grupo?.toLowerCase().includes(searchTerm.toLowerCase()) || false
@@ -131,7 +132,7 @@ const Grupos = () => {
   };
 
   const handleAddGrupo = async () => {
-    if (!user) return;
+    if (!user || !selectedEvolutionGroup) return;
 
     // Verificar limite de grupos antes de adicionar
     const maxGrupos = user.max_grupos || 0;
@@ -146,56 +147,28 @@ const Grupos = () => {
       return;
     }
 
-    // Se um grupo da Evolution foi selecionado, usar seus dados
-    if (selectedEvolutionGroup) {
-      try {
-        createGrupo({
-          nome_grupo: selectedEvolutionGroup.nome_grupo,
-          grupo_id_externo: selectedEvolutionGroup.grupo_id_externo,
-          usuario_id: user.id,
-          ativo: true
-        });
+    try {
+      createGrupo({
+        nome_grupo: selectedEvolutionGroup.nome_grupo,
+        grupo_id_externo: selectedEvolutionGroup.grupo_id_externo,
+        usuario_id: user.id,
+        ativo: true
+      });
 
-        toast({
-          title: "Grupo adicionado",
-          description: "O grupo foi adicionado com sucesso."
-        });
+      toast({
+        title: "Grupo adicionado",
+        description: "O grupo foi adicionado com sucesso."
+      });
 
-        setModalOpen(false);
-        setSelectedEvolutionGroup(null);
-        setEvolutionSearchTerm('');
-      } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Erro",
-          description: error?.message || "Não foi possível adicionar o grupo."
-        });
-      }
-    } else if (grupoNome) {
-      // Modo manual (fallback)
-      try {
-        createGrupo({
-          nome_grupo: grupoNome,
-          grupo_id_externo: grupoIdExterno,
-          usuario_id: user.id,
-          ativo: true
-        });
-
-        toast({
-          title: "Grupo adicionado",
-          description: "O grupo foi adicionado com sucesso."
-        });
-
-        setModalOpen(false);
-        setGrupoNome('');
-        setGrupoIdExterno('');
-      } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Erro",
-          description: error?.message || "Não foi possível adicionar o grupo."
-        });
-      }
+      setModalOpen(false);
+      setSelectedEvolutionGroup(null);
+      setEvolutionSearchTerm('');
+    } catch (error: unknown) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Não foi possível adicionar o grupo."
+      });
     }
   };
 
@@ -318,11 +291,18 @@ const Grupos = () => {
                 {grupos.length >= (user?.max_grupos || 0) ? 'Limite Atingido' : 'Adicionar Grupo'}
               </Button>
             </DialogTrigger>
-            <DialogContent className="cyber-card max-w-2xl max-h-[80vh]">
+            <DialogContent className="cyber-card max-w-2xl max-h-[85vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Adicionar Grupo do WhatsApp</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
+              <div className="space-y-4 pb-4">
+                {/* Alert fixo sobre carregamento */}
+                <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                  <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                    <span className="text-sm font-medium">O carregamento dos grupos pode demorar alguns segundos</span>
+                  </div>
+                </div>
                 {/* Busca nos grupos do WhatsApp */}
                 <div>
                   <label className="block text-sm font-medium mb-2">
@@ -340,7 +320,7 @@ const Grupos = () => {
                 </div>
 
                 {/* Lista de grupos do WhatsApp */}
-                <div className="max-h-64 overflow-y-auto space-y-2 border rounded-lg p-2">
+                <div className="max-h-72 overflow-y-auto space-y-2 border rounded-lg p-2">
                   {evolutionLoading ? (
                     <div className="flex items-center justify-center py-8">
                       <RefreshCw className="h-4 w-4 animate-spin mr-2" />
@@ -381,41 +361,21 @@ const Grupos = () => {
                   )}
                 </div>
 
-                {/* Modo manual (fallback) */}
-                <div className="pt-4 border-t">
-                  <div className="text-sm font-medium mb-2">Ou adicionar manualmente:</div>
-                  <div className="space-y-2">
-                    <Input
-                      value={grupoNome}
-                      onChange={(e) => setGrupoNome(e.target.value)}
-                      placeholder="Nome do grupo"
-                      className="cyber-border"
-                    />
-                    <Input
-                      value={grupoIdExterno}
-                      onChange={(e) => setGrupoIdExterno(e.target.value)}
-                      placeholder="ID do grupo (120363028264952334@g.us)"
-                      className="cyber-border"
-                    />
-                  </div>
-                </div>
 
-                <div className="flex justify-end gap-2 pt-4">
+                <div className="flex justify-end gap-2 pt-4 border-t mt-4">
                   <Button
                     variant="outline"
                     onClick={() => {
                       setModalOpen(false);
                       setSelectedEvolutionGroup(null);
                       setEvolutionSearchTerm('');
-                      setGrupoNome('');
-                      setGrupoIdExterno('');
                     }}
                   >
                     Cancelar
                   </Button>
                   <Button
                     onClick={handleAddGrupo}
-                    disabled={(!selectedEvolutionGroup && !grupoNome) || isCreating}
+                    disabled={!selectedEvolutionGroup || isCreating}
                     className="cyber-button"
                   >
                     {isCreating ? 'Adicionando...' : 'Adicionar Grupo'}

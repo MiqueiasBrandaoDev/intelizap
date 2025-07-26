@@ -73,6 +73,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             // Usar dados frescos do banco
             setUser(response.data);
             localStorage.setItem('intellizapp_user', JSON.stringify(response.data));
+            
+            // Disparar evento customizado para iniciar carregamento de grupos
+            window.dispatchEvent(new CustomEvent('userLoggedIn', { 
+              detail: { user: response.data } 
+            }));
           } else {
             // Backend retornou erro, limpar tudo
             console.error('❌ Backend retornou erro, limpando sessão');
@@ -103,6 +108,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(response.data.user);
         localStorage.setItem('intellizapp_user', JSON.stringify(response.data.user));
         localStorage.setItem('intellizapp_token', response.data.token);
+        
+        // Disparar evento customizado para iniciar carregamento de grupos
+        window.dispatchEvent(new CustomEvent('userLoggedIn', { 
+          detail: { user: response.data.user } 
+        }));
       } else {
         throw new Error(response.message || 'Login failed');
       }
@@ -123,6 +133,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(response.data.user);
         localStorage.setItem('intellizapp_user', JSON.stringify(response.data.user));
         localStorage.setItem('intellizapp_token', response.data.token);
+        
+        // Disparar evento customizado para iniciar carregamento de grupos
+        window.dispatchEvent(new CustomEvent('userLoggedIn', { 
+          detail: { user: response.data.user } 
+        }));
       } else {
         throw new Error(response.message || 'Registration failed');
       }
