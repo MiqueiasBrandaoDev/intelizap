@@ -1,0 +1,771 @@
+╭──────────────────────────────────────────────────────────────────────╮
+│ ✻ Welcome to Claude Code!                                            │
+│                                                                      │
+│   /help for help, /status for your current setup                     │
+│                                                                      │
+│   cwd: /mnt/c/Users/mique/OneDrive/Documentos/PROJETOS_PY/intelizap  │
+╰──────────────────────────────────────────────────────────────────────╯
+
+
+> vamos trabalhar e commitar na banch dev
+
+● Entendi, vamos trabalhar na branch dev. Vejo que você já está nessa branch e há uma modificação no arquivo user-teste.txt.
+
+  O que você gostaria que eu faça?
+
+> -PAGINA DE GRUPOS, MODAL ESTÁ SUMIINDO A PARTE DE BAIXO E BOTAO DEPENDENDO DA RESOLUÇÃO(PROBLEMA VISUAL NA INTERFACE), O BOTAO, REMOVER 
+  ADIÇÃO MANUAL E AVISAR QUE PODE DEMORAR CARREGAR OS GRUPOS(UM ALERT FIXO NO MODAL)
+  ⎿  Interrupted by user
+
+> Os grupos sao carregados na api quando entra na pagina grupos.
+  ⎿  Interrupted by user
+
+> Pra ficar mais rapido esse carregamento, penso em colocar pra carregar quando fazer login. Se atualizar a página, quero que volte a 
+  carregar, faça um novo request;
+
+✻ Thinking…
+
+  O usuário está descrevendo problemas na página de grupos e quer melhorias:
+
+  1. Modal está sumindo a parte de baixo e botão dependendo da resolução (problema visual)
+  2. Remover adição manual do botão
+  3. Avisar que pode demorar carregar os grupos (alert fixo no modal)
+  4. Os grupos são carregados na API quando entra na página grupos
+  5. Quer colocar para carregar quando fazer login para ficar mais rápido
+  6. Se atualizar a página, quer que volte a carregar, faça um novo request
+
+  Preciso primeiro entender a estrutura do projeto e encontrar onde estão os componentes relacionados aos grupos, modais, login, etc.
+
+  Vou usar o TodoWrite para organizar as tarefas e depois começar a investigar o código.
+
+● Vou ajudar a resolver esses problemas na página de grupos. Deixe-me organizar as tarefas:
+
+● Update Todos
+  ⎿  ☐ Investigar estrutura do projeto e localizar componentes de grupos
+     ☐ Corrigir problema visual do modal (parte de baixo sumindo)
+     ☐ Mover carregamento de grupos para o momento do login
+     ☐ Remover adição manual do botão
+     ☐ Adicionar alert fixo informando que carregamento pode demorar
+     ☐ Implementar recarregamento quando página for atualizada
+
+✻ Thinking…
+
+  Agora preciso investigar a estrutura do projeto para entender onde estão os componentes relacionados a grupos, modais e login. Vou começar
+   explorando a estrutura de pastas e procurando por arquivos relacionados a grupos.
+
+● Update Todos
+  ⎿  ☐ Investigar estrutura do projeto e localizar componentes de grupos
+     ☐ Corrigir problema visual do modal (parte de baixo sumindo)
+     ☐ Mover carregamento de grupos para o momento do login
+     ☐ Remover adição manual do botão
+     ☐ Adicionar alert fixo informando que carregamento pode demorar
+     ☐ Implementar recarregamento quando página for atualizada
+
+✻ Thinking…
+
+  Agora vou explorar a estrutura do projeto para encontrar os componentes relacionados a grupos, modais e login.
+
+● List(.)
+  ⎿  Listed 230 paths (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou procurar pelos arquivos relacionados aos grupos para entender melhor a estrutura. Vejo que existe:
+
+  1. src/pages/Grupos.tsx - página principal de grupos
+  2. src/hooks/useGrupos.ts - hook para gerenciar grupos
+  3. src/hooks/useEvolutionGroups.ts - hook específico para grupos da Evolution API
+  4. backend/src/controllers/gruposController.js - controlador no backend
+
+  Vou começar investigando esses arquivos para entender como funciona o carregamento de grupos.
+
+● Read(src/pages/Grupos.tsx)
+  ⎿  Read 549 lines (ctrl+r to expand)
+
+● Read(src/hooks/useGrupos.ts)
+  ⎿  Read 77 lines (ctrl+r to expand)
+
+● Read(src/hooks/useEvolutionGroups.ts)
+  ⎿  Read 28 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou verificar também como funciona o AuthContext para entender o processo de login e onde posso inserir o carregamento de grupos.
+
+● Read(src/contexts/AuthContext.tsx)
+  ⎿  Read 172 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou verificar o service api para entender melhor como os grupos são carregados:
+
+● Read(src/services/api.ts)
+  ⎿  Read 220 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou marcar a primeira tarefa como completa e começar a trabalhar nas correções. Entendi que:
+
+  1. A página de grupos está em src/pages/Grupos.tsx
+  2. O modal está definido dentro do componente Dialog nas linhas 309-426
+  3. Os grupos da Evolution API são carregados na linha 63-68 quando a página de grupos é aberta
+  4. O contexto de autenticação está no AuthContext.tsx
+
+  Agora preciso implementar as seguintes correções:
+
+  1. Corrigir problema visual do modal (parte de baixo sumindo)
+  2. Remover adição manual do botão 
+  3. Adicionar alert fixo informando que carregamento pode demorar
+  4. Mover carregamento de grupos para o momento do login
+  5. Implementar recarregamento quando página for atualizada
+
+  Vou começar com as correções visuais do modal.
+
+● Update Todos
+  ⎿  ☒ Investigar estrutura do projeto e localizar componentes de grupos
+     ☐ Corrigir problema visual do modal (parte de baixo sumindo)
+     ☐ Mover carregamento de grupos para o momento do login
+     ☐ Remover adição manual do botão
+     ☐ Adicionar alert fixo informando que carregamento pode demorar
+     ☐ Implementar recarregamento quando página for atualizada
+
+✻ Thinking…
+
+  Analisando o código do modal na página de grupos, vou começar corrigindo:
+
+  1. O problema visual do modal - o modal está limitado a max-h-[80vh] mas precisa de melhor responsividade
+  2. Remover a adição manual 
+  3. Adicionar o alert fixo
+
+  Vou fazer essas correções primeiro no arquivo Grupos.tsx.
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Updated src/pages/Grupos.tsx with 12 additions and 23 removals                                                                   
+       318                    {grupos.length >= (user?.max_grupos || 0) ? 'Limite Atingido' : 'Adicionar Grupo'}
+       319                  </Button>
+       320                </DialogTrigger>
+       321 -              <DialogContent className="cyber-card max-w-2xl max-h-[80vh]">
+       321 +              <DialogContent className="cyber-card max-w-2xl max-h-[85vh] overflow-y-auto">
+       322                  <DialogHeader>
+       323                    <DialogTitle>Adicionar Grupo do WhatsApp</DialogTitle>
+       324                  </DialogHeader>
+       325 -                <div className="space-y-4">
+       325 +                <div className="space-y-4 pb-4">
+       326 +                  {/* Alert fixo sobre carregamento */}
+       327 +                  <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+       328 +                    <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+       329 +                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+       330 +                      <span className="text-sm font-medium">O carregamento dos grupos pode demorar alguns segundos</span>
+       331 +                    </div>
+       332 +                  </div>
+       333                    {/* Busca nos grupos do WhatsApp */}
+       334                    <div>
+       335                      <label className="block text-sm font-medium mb-2">
+     ...
+       340                    </div>
+       341    
+       342                    {/* Lista de grupos do WhatsApp */}
+       343 -                  <div className="max-h-64 overflow-y-auto space-y-2 border rounded-lg p-2">
+       343 +                  <div className="max-h-72 overflow-y-auto space-y-2 border rounded-lg p-2">
+       344                      {evolutionLoading ? (
+       345                        <div className="flex items-center justify-center py-8">
+       346                          <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+     ...
+       381                      )}
+       382                    </div>
+       383    
+       384 -                  {/* Modo manual (fallback) */}
+       385 -                  <div className="pt-4 border-t">
+       386 -                    <div className="text-sm font-medium mb-2">Ou adicionar manualmente:</div>
+       387 -                    <div className="space-y-2">
+       388 -                      <Input
+       389 -                        value={grupoNome}
+       390 -                        onChange={(e) => setGrupoNome(e.target.value)}
+       391 -                        placeholder="Nome do grupo"
+       392 -                        className="cyber-border"
+       393 -                      />
+       394 -                      <Input
+       395 -                        value={grupoIdExterno}
+       396 -                        onChange={(e) => setGrupoIdExterno(e.target.value)}
+       397 -                        placeholder="ID do grupo (120363028264952334@g.us)"
+       398 -                        className="cyber-border"
+       399 -                      />
+       400 -                    </div>
+       401 -                  </div>
+       384    
+       385 -                  <div className="flex justify-end gap-2 pt-4">
+       385 +                  <div className="flex justify-end gap-2 pt-4 border-t mt-4">
+       386                      <Button
+       387                        variant="outline"
+       388                        onClick={() => {
+     ...
+       415                      </Button>
+       416                      <Button
+       417                        onClick={handleAddGrupo}
+       418 -                      disabled={(!selectedEvolutionGroup && !grupoNome) || isCreating}
+       418 +                      disabled={!selectedEvolutionGroup || isCreating}
+       419                        className="cyber-button"
+       420                      >
+       421                        {isCreating ? 'Adicionando...' : 'Adicionar Grupo'}
+
+✻ Thinking…
+
+  Agora preciso atualizar a função handleAddGrupo para remover a lógica de adição manual, já que removemos essa seção do modal:
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Updated src/pages/Grupos.tsx with 21 additions and 49 removals                         
+       131      };
+       132    
+       133      const handleAddGrupo = async () => {
+       134 -      if (!user) return;
+       134 +      if (!user || !selectedEvolutionGroup) return;
+       135    
+       136        // Verificar limite de grupos antes de adicionar
+       137        const maxGrupos = user.max_grupos || 0;
+     ...
+       146          return;
+       147        }
+       148    
+       149 -      // Se um grupo da Evolution foi selecionado, usar seus dados
+       150 -      if (selectedEvolutionGroup) {
+       151 -        try {
+       152 -          createGrupo({
+       153 -            nome_grupo: selectedEvolutionGroup.nome_grupo,
+       154 -            grupo_id_externo: selectedEvolutionGroup.grupo_id_externo,
+       155 -            usuario_id: user.id,
+       156 -            ativo: true
+       157 -          });
+       149 +      try {
+       150 +        createGrupo({
+       151 +          nome_grupo: selectedEvolutionGroup.nome_grupo,
+       152 +          grupo_id_externo: selectedEvolutionGroup.grupo_id_externo,
+       153 +          usuario_id: user.id,
+       154 +          ativo: true
+       155 +        });
+       156    
+       157 -          toast({
+       158 -            title: "Grupo adicionado",
+       159 -            description: "O grupo foi adicionado com sucesso."
+       160 -          });
+       157 +        toast({
+       158 +          title: "Grupo adicionado",
+       159 +          description: "O grupo foi adicionado com sucesso."
+       160 +        });
+       161    
+       162 -          setModalOpen(false);
+       163 -          setSelectedEvolutionGroup(null);
+       164 -          setEvolutionSearchTerm('');
+       165 -        } catch (error: any) {
+       166 -          toast({
+       167 -            variant: "destructive",
+       168 -            title: "Erro",
+       169 -            description: error?.message || "Não foi possível adicionar o grupo."
+       170 -          });
+       171 -        }
+       172 -      } else if (grupoNome) {
+       173 -        // Modo manual (fallback)
+       174 -        try {
+       175 -          createGrupo({
+       176 -            nome_grupo: grupoNome,
+       177 -            grupo_id_externo: grupoIdExterno,
+       178 -            usuario_id: user.id,
+       179 -            ativo: true
+       180 -          });
+       181 -  
+       182 -          toast({
+       183 -            title: "Grupo adicionado",
+       184 -            description: "O grupo foi adicionado com sucesso."
+       185 -          });
+       186 -  
+       187 -          setModalOpen(false);
+       188 -          setGrupoNome('');
+       189 -          setGrupoIdExterno('');
+       190 -        } catch (error: any) {
+       191 -          toast({
+       192 -            variant: "destructive",
+       193 -            title: "Erro",
+       194 -            description: error?.message || "Não foi possível adicionar o grupo."
+       195 -          });
+       196 -        }
+       162 +        setModalOpen(false);
+       163 +        setSelectedEvolutionGroup(null);
+       164 +        setEvolutionSearchTerm('');
+       165 +      } catch (error: any) {
+       166 +        toast({
+       167 +          variant: "destructive",
+       168 +          title: "Erro",
+       169 +          description: error?.message || "Não foi possível adicionar o grupo."
+       170 +        });
+       171        }
+       172      };
+       173    
+
+✻ Thinking…
+
+  Agora preciso remover as variáveis de estado que eram usadas para adição manual e também atualizar a função que limpa o modal:
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Updated src/pages/Grupos.tsx with 4 removals                                              
+       39      const [searchTerm, setSearchTerm] = useState('');
+       40      const [syncing, setSyncing] = useState(false);
+       41      const [modalOpen, setModalOpen] = useState(false);
+       42 -    const [grupoNome, setGrupoNome] = useState('');
+       43 -    const [grupoIdExterno, setGrupoIdExterno] = useState('');
+       42      const [selectedEvolutionGroup, setSelectedEvolutionGroup] = useState<any>(null);
+       43      const [evolutionSearchTerm, setEvolutionSearchTerm] = useState('');
+       44      
+     ...
+       368                          setModalOpen(false);
+       369                          setSelectedEvolutionGroup(null);
+       370                          setEvolutionSearchTerm('');
+       371 -                        setGrupoNome('');
+       372 -                        setGrupoIdExterno('');
+       371                        }}
+       372                      >
+       373                        Cancelar
+
+✻ Thinking…
+
+  Agora vou marcar as tarefas 2 e 3 como completas e passar para a tarefa 4 (que já foi feita parcialmente com o alert) e depois a tarefa 5 
+  que é mover o carregamento de grupos para o login.
+
+● Update Todos
+  ⎿  ☒ Investigar estrutura do projeto e localizar componentes de grupos
+     ☒ Corrigir problema visual do modal (parte de baixo sumindo)
+     ☒ Remover adição manual do botão
+     ☒ Adicionar alert fixo informando que carregamento pode demorar
+     ☐ Mover carregamento de grupos para o momento do login
+     ☐ Implementar recarregamento quando página for atualizada
+
+✻ Thinking…
+
+  Para mover o carregamento de grupos para o momento do login, preciso:
+
+  1. Criar um contexto/hook global para gerenciar grupos da Evolution API
+  2. Modificar o AuthContext para disparar o carregamento quando o usuário faz login
+  3. Modificar o useEvolutionGroups para usar cache/estado global
+  4. Implementar invalidação quando a página for atualizada
+
+  Vou começar criando um contexto para gerenciar os grupos da Evolution API globalmente.
+
+● Write(src/contexts/EvolutionGroupsContext.tsx)
+  ⎿  Wrote 91 lines to src/contexts/EvolutionGroupsContext.tsx                     
+     import React, { createContext, useContext, useEffect, useState } from 'react';
+     import { useQuery, useQueryClient } from '@tanstack/react-query';
+     import { apiService } from '@/services/api';
+     import { useAuth } from '@/contexts/AuthContext';
+     interface EvolutionGroup {
+       nome_grupo: string;
+       grupo_id_externo: string;
+       participantes: number;
+     }
+     … +81 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou modificar o AuthContext para chamar o preloadGroups quando o usuário fizer login:
+
+● Update(src/contexts/AuthContext.tsx)
+  ⎿  Updated src/contexts/AuthContext.tsx with 5 additions                                         
+       103            setUser(response.data.user);
+       104            localStorage.setItem('intellizapp_user', JSON.stringify(response.data.user));
+       105            localStorage.setItem('intellizapp_token', response.data.token);
+       106 +          
+       107 +          // Disparar evento customizado para iniciar carregamento de grupos
+       108 +          window.dispatchEvent(new CustomEvent('userLoggedIn', { 
+       109 +            detail: { user: response.data.user } 
+       110 +          }));
+       111          } else {
+       112            throw new Error(response.message || 'Login failed');
+       113          }
+
+✻ Thinking…
+
+  Agora vou fazer a mesma adição para o registro e também para quando o usuário for carregado no checkStoredAuth:
+
+● Update(src/contexts/AuthContext.tsx)
+  ⎿  Error: Found 2 matches of the string to replace, but replace_all is false. To replace all occurrences, set replace_all to true. To 
+     replace only one occurrence, please provide more context to uniquely identify the instance.
+     String:       if (response.success && response.data) {
+             setUser(response.data.user);
+             localStorage.setItem('intellizapp_user', JSON.stringify(response.data.user));
+             localStorage.setItem('intellizapp_token', response.data.token);
+
+✻ Thinking…
+
+  Preciso ser mais específico para o register. Vou fazer uma edição separada para o register:
+
+● Update(src/contexts/AuthContext.tsx)
+  ⎿  Updated src/contexts/AuthContext.tsx with 10 additions                                        
+       73                // Usar dados frescos do banco
+       74                setUser(response.data);
+       75                localStorage.setItem('intellizapp_user', JSON.stringify(response.data));
+       76 +              
+       77 +              // Disparar evento customizado para iniciar carregamento de grupos
+       78 +              window.dispatchEvent(new CustomEvent('userLoggedIn', { 
+       79 +                detail: { user: response.data } 
+       80 +              }));
+       81              } else {
+       82                // Backend retornou erro, limpar tudo
+       83                console.error('❌ Backend retornou erro, limpando sessão');
+     ...
+       128            setUser(response.data.user);
+       129            localStorage.setItem('intellizapp_user', JSON.stringify(response.data.user));
+       130            localStorage.setItem('intellizapp_token', response.data.token);
+       131 +          
+       132 +          // Disparar evento customizado para iniciar carregamento de grupos
+       133 +          window.dispatchEvent(new CustomEvent('userLoggedIn', { 
+       134 +            detail: { user: response.data.user } 
+       135 +          }));
+       136          } else {
+       137            throw new Error(response.message || 'Registration failed');
+       138          }
+
+✻ Thinking…
+
+  Agora vou modificar o EvolutionGroupsContext para escutar o evento customizado:
+
+● Update(src/contexts/EvolutionGroupsContext.tsx)
+  ⎿  Updated src/contexts/EvolutionGroupsContext.tsx with 17 additions                             
+       67        }
+       68      }, [isAuthenticated, user, instanceName]);
+       69    
+       70 +    // Escutar evento de login para começar carregamento imediatamente
+       71 +    useEffect(() => {
+       72 +      const handleUserLoggedIn = (event: CustomEvent) => {
+       73 +        const { user: loggedUser } = event.detail;
+       74 +        if (loggedUser?.nome) {
+       75 +          console.log('🚀 Iniciando carregamento de grupos após login...');
+       76 +          preloadGroups(loggedUser.nome);
+       77 +        }
+       78 +      };
+       79 +  
+       80 +      window.addEventListener('userLoggedIn', handleUserLoggedIn as EventListener);
+       81 +      
+       82 +      return () => {
+       83 +        window.removeEventListener('userLoggedIn', handleUserLoggedIn as EventListener);
+       84 +      };
+       85 +    }, []);
+       86 +  
+       87      // Limpar cache quando o usuário fizer logout
+       88      useEffect(() => {
+       89        if (!isAuthenticated) {
+
+✻ Thinking…
+
+  Agora preciso integrar esse contexto no App.tsx e modificar a página de grupos para usar o contexto global em vez do hook local. Vou 
+  primeiro verificar o App.tsx:
+
+● Read(src/App.tsx)
+  ⎿  Read 103 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou adicionar o EvolutionGroupsProvider ao App.tsx:
+
+● Update(src/App.tsx)
+  ⎿  Updated src/App.tsx with 1 addition                                                            
+        6    import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+        7    import { useEffect } from "react";
+        8    import { AuthProvider } from "@/contexts/AuthContext";
+        9 +  import { EvolutionGroupsProvider } from "@/contexts/EvolutionGroupsContext";
+       10    import ProtectedRoute from "@/components/ProtectedRoute";
+       11    import DashboardLayout from "@/components/layout/DashboardLayout";
+       12    import Login from "@/pages/auth/Login";
+
+✻ Thinking…
+
+  Agora vou adicionar o provider na estrutura de providers:
+
+● Update(src/App.tsx)
+  ⎿  Updated src/App.tsx with 2 additions and 1 removal  
+       43    const App = () => (
+       44      <QueryClientProvider client={queryClient}>
+       45        <AuthProvider>
+       46 -        <TooltipProvider>
+       46 +        <EvolutionGroupsProvider>
+       47 +          <TooltipProvider>
+       48            <Toaster />
+       49            <Sonner />
+       50            <BrowserRouter>
+
+✻ Thinking…
+
+  Agora preciso fechar o provider no final do componente:
+
+● Update(src/App.tsx)
+  ⎿  Updated src/App.tsx with 2 additions and 1 removal                                    
+        96                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        97              </Routes>
+        98            </BrowserRouter>
+        99 -        </TooltipProvider>
+        99 +          </TooltipProvider>
+       100 +        </EvolutionGroupsProvider>
+       101        </AuthProvider>
+       102      </QueryClientProvider>
+       103    );
+
+✻ Thinking…
+
+  Agora vou modificar a página de grupos para usar o contexto global em vez do hook local:
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Updated src/pages/Grupos.tsx with 1 addition and 1 removal                            
+       29      DialogTrigger,
+       30    } from '@/components/ui/dialog';
+       31    import { useGrupos } from '@/hooks/useGrupos';
+       32 -  import { useEvolutionGroups } from '@/hooks/useEvolutionGroups';
+       32 +  import { useEvolutionGroupsContext } from '@/contexts/EvolutionGroupsContext';
+       33    import { Grupo } from '@/types/database';
+       34    import { useAuth } from '@/contexts/AuthContext';
+       35    
+
+✻ Thinking…
+
+  Agora vou substituir o uso do hook local pelo contexto global:
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Updated src/pages/Grupos.tsx with 2 additions and 3 removals                           
+       56        isCreating
+       57      } = useGrupos();
+       58    
+       59 -    // Buscar grupos da Evolution API - usar o nome do usuário como instância
+       60 -    const instanceName = user?.nome || 'Miqueias';
+       59 +    // Usar contexto global para grupos da Evolution API
+       60      const {
+       61        evolutionGroups,
+       62        isLoading: evolutionLoading,
+       63        error: evolutionError,
+       64        refetch: refetchEvolutionGroups
+       65 -    } = useEvolutionGroups(instanceName);
+       65 +    } = useEvolutionGroupsContext();
+       66    
+       67      const filteredGroups = grupos.filter(grupo =>
+       68        grupo.nome_grupo?.toLowerCase().includes(searchTerm.toLowerCase()) || false
+
+✻ Thinking…
+
+  Agora vou completar a tarefa 5 e marcar como completa, depois trabalhar na tarefa 6 que é implementar recarregamento quando a página for 
+  atualizada. Na verdade, o EvolutionGroupsContext já está configurado para isso com refetchOnWindowFocus: true e refetchOnMount: true.
+
+  Vou apenas verificar se funciona testando o sistema.
+
+● Update Todos
+  ⎿  ☒ Investigar estrutura do projeto e localizar componentes de grupos
+     ☒ Corrigir problema visual do modal (parte de baixo sumindo)
+     ☒ Mover carregamento de grupos para o momento do login
+     ☒ Remover adição manual do botão
+     ☒ Adicionar alert fixo informando que carregamento pode demorar
+     ☒ Implementar recarregamento quando página for atualizada
+
+✻ Thinking…
+
+  Agora vou verificar se há erros de build e testar o sistema executando os comandos de lint e build:
+
+● Bash(npm run lint)
+  ⎿  Error: > vite_react_shadcn_ts@0.0.0 lint
+     > eslint .
+
+
+     /mnt/c/Users/mique/OneDrive/Documentos/PROJETOS_PY/intelizap/src/components/StatsSection.tsx
+       111:39  warning  The ref value 'sectionRef.current' will likely have changed by the time this effect cleanup function runs. If this 
+     ref points to a node rendered by React, copy 'sectionRef.current' to a variable inside the effect, and use that variable in the cleanup 
+     function  react-hooks/exhaustive-deps
+
+     /mnt/c/Users/mique/OneDrive/Documentos/PROJETOS_PY/intelizap/src/components/layout/DashboardLayout.tsx
+       30:3  error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component 
+     render  react-hooks/rules-of-hooks
+
+     … +61 lines (ctrl+r to see all)
+
+✻ Thinking…
+
+  Existem alguns erros que preciso corrigir. Vou focar nos erros relacionados ao meu código:
+
+  1. No EvolutionGroupsContext.tsx - erro de any type e dependência missing
+  2. No Grupos.tsx - erro de any type
+
+  Vou corrigir esses erros primeiro:
+
+● Update(src/contexts/EvolutionGroupsContext.tsx)
+  ⎿  Updated src/contexts/EvolutionGroupsContext.tsx with 2 additions and 2 removals               
+       12    interface EvolutionGroupsContextType {
+       13      evolutionGroups: EvolutionGroup[];
+       14      isLoading: boolean;
+       15 -    error: any;
+       15 +    error: Error | null;
+       16      refetch: () => void;
+       17      preloadGroups: (instanceName: string) => void;
+       18    }
+     ...
+       82        return () => {
+       83          window.removeEventListener('userLoggedIn', handleUserLoggedIn as EventListener);
+       84        };
+       85 -    }, []);
+       85 +    }, [preloadGroups]);
+       86    
+       87      // Limpar cache quando o usuário fizer logout
+       88      useEffect(() => {
+
+✻ Thinking…
+
+  Agora vou corrigir os erros no arquivo Grupos.tsx:
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Error: String to replace not found in file.
+     String:       } catch (error: any) {
+
+✻ Thinking…
+
+  Vou verificar onde está o erro e corrigir individualmente:
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Updated src/pages/Grupos.tsx with 5 additions and 1 removal                               
+       39      const [searchTerm, setSearchTerm] = useState('');
+       40      const [syncing, setSyncing] = useState(false);
+       41      const [modalOpen, setModalOpen] = useState(false);
+       42 -    const [selectedEvolutionGroup, setSelectedEvolutionGroup] = useState<any>(null);
+       42 +    const [selectedEvolutionGroup, setSelectedEvolutionGroup] = useState<{
+       43 +      nome_grupo: string;
+       44 +      grupo_id_externo: string;
+       45 +      participantes: number;
+       46 +    } | null>(null);
+       47      const [evolutionSearchTerm, setEvolutionSearchTerm] = useState('');
+       48      
+       49      
+
+✻ Thinking…
+
+  Agora vou procurar a linha com error: any:
+
+● Search(pattern: "error: any", path: "src/pages")
+  ⎿  Found 2 files (ctrl+r to expand)
+
+✻ Thinking…
+
+  Vou ler as linhas específicas em Grupos.tsx para encontrar onde estão os erros de any:
+
+● Read(src/pages/Grupos.tsx)
+  ⎿  Read 10 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou corrigir esse erro:
+
+● Update(src/pages/Grupos.tsx)
+  ⎿  Updated src/pages/Grupos.tsx with 2 additions and 2 removals                                                
+       163          setModalOpen(false);
+       164          setSelectedEvolutionGroup(null);
+       165          setEvolutionSearchTerm('');
+       166 -      } catch (error: any) {
+       166 +      } catch (error: unknown) {
+       167          toast({
+       168            variant: "destructive",
+       169            title: "Erro",
+       170 -          description: error?.message || "Não foi possível adicionar o grupo."
+       170 +          description: error instanceof Error ? error.message : "Não foi possível adicionar o grupo."
+       171          });
+       172        }
+       173      };
+
+✻ Thinking…
+
+  Agora vou rodar o build para ver se tudo está funcionando:
+
+● Bash(npm run build)
+  ⎿  > vite_react_shadcn_ts@0.0.0 build
+     > vite build
+
+     … +12 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Perfeito! O build funcionou com sucesso. Agora vou criar um commit com todas as mudanças implementadas:
+
+● Bash(git status)
+  ⎿  On branch dev                               
+     Your branch is up to date with 'origin/dev'.
+
+     … +13 lines (ctrl+r to expand)
+
+● Bash(git diff --staged)
+  ⎿  (No content)
+
+● Bash(git diff)
+  ⎿  diff --git a/src/App.tsx b/src/App.tsx
+     index 182036f..202bd64 100644
+     --- a/src/App.tsx
+     … +283 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou adicionar os arquivos ao git e fazer o commit:
+
+● Bash(git add src/App.tsx src/contexts/AuthContext.tsx src/pages/Grupos.tsx src/contexts/EvolutionGroupsContext.tsx)
+  ⎿  (No content)
+
+● Bash(git status)
+  ⎿  On branch dev                               
+     Your branch is up to date with 'origin/dev'.
+
+     … +11 lines (ctrl+r to expand)
+
+✻ Thinking…
+
+  Agora vou criar o commit com uma mensagem descritiva:
+
+● Bash(git commit -m "Improve groups page UX and optimize loading performance…)
+  ⎿  [dev 933e118] Improve groups page UX and optimize loading performance
+      4 files changed, 169 insertions(+), 83 deletions(-)
+      create mode 100644 src/contexts/EvolutionGroupsContext.tsx
+
+✻ Thinking…
+
+  Perfeito! Commit criado com sucesso. Agora vou verificar o status final para confirmar que tudo foi commitado corretamente:
+
+● Bash(git log --oneline -3)
+  ⎿  933e118 Improve groups page UX and optimize loading performance
+     b1f2ff5 Redirect registration link to external website
+     0a9101b Fix syntax errors in Conexao.tsx
+
+✻ Thinking…
+
+  Excelente! Todas as tarefas foram implementadas com sucesso. Vou fazer um resumo final das melhorias implementadas:
+
+● ✅ Implementação concluída! Todas as melhorias na página de grupos foram realizadas:
+
+  ✨ Melhorias Implementadas:
+
+  1. 🔧 Problema visual do modal corrigido
+    - Aumentado max-h de 80vh para 85vh
+    - Adicionado overflow-y-auto para scroll adequado
+  2. 🚫 Remoção da adição manual
+    - Forçar seleção apenas via Evolution API
+    - Interface mais limpa e consistente
+  3. ⚠️ Alert informativo adicionado
+    - Banner azul fixo informando sobre possível demora no carregamento
+    - Visual elegante com animação de pulse
+  4. 🚀 Carregamento otimizado no login
+    - Grupos carregam automaticamente no momento do login
+    - Contexto global EvolutionGroupsContext para gerenciamento centralizado
+    - Sistema de eventos customizados para trigger no login/registro
+  5. 🔄 Recarregamento automático
+    - Refresh quando página ganha foco (refetchOnWindowFocus)
+    - Recarregamento ao montar componente (refetchOnMount)
+  6. ⚡ Performance e UX
+    - Cache de 5 minutos para dados dos grupos
+    - Carregamento em background durante login
+    - Interface mais responsiva
+
+  🛠️ Arquivos Modificados:
+
+  - src/pages/Grupos.tsx - Interface e lógica do modal
+  - src/contexts/AuthContext.tsx - Trigger de carregamento no login
+  - src/contexts/EvolutionGroupsContext.tsx - NOVO contexto global
+  - src/App.tsx - Integração do novo provider
+
+  Commit criado na branch dev com todas as mudanças! 🎉
+
+> /model 
+  ⎿  Set model to sonnet (claude-sonnet-4-20250514)
+
