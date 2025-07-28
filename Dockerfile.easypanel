@@ -112,9 +112,50 @@ if ! nc -z localhost 3001 2>/dev/null; then
     exit 1
 fi
 
+# Testar configuração do nginx
+echo "🔧 Testing nginx configuration..."
+nginx -t
+
+if [ $? -ne 0 ]; then
+    echo "❌ Nginx configuration test failed!"
+    exit 1
+fi
+
 # Iniciar nginx
 echo "🌐 Starting nginx on port 3000..."
-exec nginx -g 'daemon off;'
+nginx -g 'daemon off;' &
+NGINX_PID=$!
+
+# Aguardar nginx iniciar
+echo "⏳ Waiting for nginx to start..."
+for i in $(seq 1 10); do
+    if nc -z localhost 3000 2>/dev/null; then
+        echo "✅ Nginx is ready on port 3000"
+        break
+    fi
+    echo "⏱️  Waiting for nginx... ($i/10)"
+    sleep 1
+    
+    # Verificar se nginx morreu
+    if ! kill -0 $NGINX_PID 2>/dev/null; then
+        echo "❌ Nginx crashed! Error logs:"
+        cat /var/log/nginx/error.log
+        exit 1
+    fi
+done
+
+# Verificar se nginx está respondendo
+if ! nc -z localhost 3000 2>/dev/null; then
+    echo "❌ Nginx not responding on port 3000"
+    echo "📋 Nginx error logs:"
+    cat /var/log/nginx/error.log
+    exit 1
+fi
+
+echo "🎉 All services started successfully!"
+
+# Aguardar processos
+wait
 EOF
 
 RUN chmod +x /app/start.sh && chown appuser:appuser /app/start.sh
