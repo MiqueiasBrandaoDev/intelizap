@@ -269,6 +269,18 @@ export const getInstanceGroups = async (req, res) => {
     }
 
     console.log('👥 Getting groups from Evolution API:', instanceName);
+    console.log('🔧 EVOLUTION_API_URL:', EVOLUTION_API_URL);
+    console.log('🔑 EVOLUTION_API_KEY present:', !!EVOLUTION_API_KEY);
+    console.log('👤 UserId:', userId);
+
+    // Validate environment variables
+    if (!EVOLUTION_API_URL || EVOLUTION_API_URL === 'http://localhost:8080') {
+      throw new Error('EVOLUTION_API_URL não está configurada ou está usando valor padrão');
+    }
+    
+    if (!EVOLUTION_API_KEY || EVOLUTION_API_KEY === 'your-evolution-api-key') {
+      throw new Error('EVOLUTION_API_KEY não está configurada ou está usando valor padrão');
+    }
 
     // First check if instance is connected
     const statusController = new AbortController();
@@ -375,21 +387,28 @@ export const getInstanceGroups = async (req, res) => {
     }
 
   } catch (error) {
-    console.error('❌ Get groups error:', error);
+    console.error('❌ Get groups error:', error.message);
+    console.error('❌ Error name:', error.name);
     console.error('❌ Stack trace:', error.stack);
+    console.error('❌ Full error object:', JSON.stringify(error, null, 2));
     
-    // Send more user-friendly error messages
-    let errorMessage = 'Erro interno do servidor';
+    // Send more detailed error information
+    let errorMessage = `Erro interno: ${error.message}`;
     
     if (error.message.includes('Timeout') || error.message.includes('demorando')) {
       errorMessage = 'WhatsApp está demorando para responder. Verifique se está conectado e tente novamente.';
     } else if (error.message.includes('Falha ao buscar grupos')) {
       errorMessage = 'Não foi possível buscar os grupos. Verifique se o WhatsApp está conectado.';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'Não foi possível conectar com a Evolution API. Verifique se está rodando.';
+    } else if (error.name === 'AbortError') {
+      errorMessage = 'Timeout ao conectar com Evolution API.';
     }
     
     res.status(500).json({
       success: false,
-      message: errorMessage
+      message: errorMessage,
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };
