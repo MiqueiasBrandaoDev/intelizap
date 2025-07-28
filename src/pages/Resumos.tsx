@@ -87,17 +87,12 @@ const Resumos = () => {
   };
 
   const formatDate = (dateString: string) => {
-    // Adicionar 3 horas para compensar o fuso horário
-    const date = new Date(dateString);
-    date.setHours(date.getHours() + 3);
-    return date.toLocaleString('pt-BR');
+    return new Date(dateString).toLocaleString('pt-BR');
   };
 
   const getTimeSince = (dateString: string) => {
     const now = new Date();
-    // Adicionar 3 horas para compensar o fuso horário
     const date = new Date(dateString);
-    date.setHours(date.getHours() + 3);
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     
     if (diffInHours < 1) return 'Agora mesmo';
