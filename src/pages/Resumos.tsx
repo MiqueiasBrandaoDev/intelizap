@@ -88,24 +88,30 @@ const Resumos = () => {
 
   const formatDate = (dateString: string) => {
     if (!dateString) return 'Data não disponível';
-    // Força interpretação como UTC de São Paulo (-3h)
-    const normalizedDate = dateString.replace(' ', 'T') + '-03:00';
-    return new Date(normalizedDate).toLocaleString('pt-BR', {
-      timeZone: 'America/Sao_Paulo'
-    });
+    try {
+      // Cria uma nova data tratando como horário local e subtrai 3h para ajustar UTC
+      const date = new Date(dateString.replace(' ', 'T'));
+      const adjustedDate = new Date(date.getTime() + (3 * 60 * 60 * 1000)); // +3h para compensar UTC-3
+      return adjustedDate.toLocaleString('pt-BR');
+    } catch (error) {
+      return 'Data inválida';
+    }
   };
 
   const getTimeSince = (dateString: string) => {
     if (!dateString) return 'Data não disponível';
-    const now = new Date();
-    // Força interpretação como UTC de São Paulo (-3h)
-    const normalizedDate = dateString.replace(' ', 'T') + '-03:00';
-    const date = new Date(normalizedDate);
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Agora mesmo';
-    if (diffInHours < 24) return `${diffInHours}h atrás`;
-    return `${Math.floor(diffInHours / 24)}d atrás`;
+    try {
+      const now = new Date();
+      const date = new Date(dateString.replace(' ', 'T'));
+      const adjustedDate = new Date(date.getTime() + (3 * 60 * 60 * 1000)); // +3h para compensar UTC-3
+      const diffInHours = Math.floor((now.getTime() - adjustedDate.getTime()) / (1000 * 60 * 60));
+      
+      if (diffInHours < 1) return 'Agora mesmo';
+      if (diffInHours < 24) return `${diffInHours}h atrás`;
+      return `${Math.floor(diffInHours / 24)}d atrás`;
+    } catch (error) {
+      return 'Data inválida';
+    }
   };
 
   return (

@@ -3,11 +3,14 @@ import React from 'react';
 // Helper function to format dates correctly (avoiding UTC interpretation)
 const formatDateLocal = (dateString: string) => {
   if (!dateString) return 'Data não disponível';
-  // Força interpretação como UTC de São Paulo (-3h)
-  const normalizedDate = dateString.replace(' ', 'T') + '-03:00';
-  return new Date(normalizedDate).toLocaleString('pt-BR', {
-    timeZone: 'America/Sao_Paulo'
-  });
+  try {
+    // Cria uma nova data tratando como horário local e adiciona 3h para ajustar UTC-3
+    const date = new Date(dateString.replace(' ', 'T'));
+    const adjustedDate = new Date(date.getTime() + (3 * 60 * 60 * 1000)); // +3h para compensar UTC-3
+    return adjustedDate.toLocaleString('pt-BR');
+  } catch (error) {
+    return 'Data inválida';
+  }
 };
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
