@@ -3,13 +3,9 @@ import React from 'react';
 // Helper function to format dates correctly (avoiding UTC interpretation)
 const formatDateLocal = (dateString: string) => {
   if (!dateString) return 'Data não disponível';
-  // Força interpretação como horário local ao adicionar 'T00:00:00' se não tiver hora
-  const dateStr = dateString.includes('T') ? dateString : dateString + 'T00:00:00';
-  const date = new Date(dateStr);
-  // Adiciona o offset de timezone para corrigir UTC
-  const offset = date.getTimezoneOffset() * 60000;
-  const localDate = new Date(date.getTime() - offset);
-  return localDate.toLocaleString('pt-BR');
+  // Trata a string como datetime local substituindo espaço por T
+  const normalizedDate = dateString.replace(' ', 'T');
+  return new Date(normalizedDate).toLocaleString('pt-BR');
 };
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
