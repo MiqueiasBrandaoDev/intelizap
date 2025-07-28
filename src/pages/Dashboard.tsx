@@ -28,7 +28,6 @@ import {
   TrendingUp,
   BarChart3,
   AlertCircle,
-  Target,
   MessageSquare,
   BookOpen
 } from 'lucide-react';
@@ -227,23 +226,6 @@ const Dashboard = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Target className="h-5 w-5 text-green-500" />
-                    <div>
-                      <p className="text-sm font-medium">Score de Produtividade</p>
-                      <p className="text-xs text-muted-foreground">
-                        Baseado na relação resumos/grupos
-                      </p>
-                    </div>
-                  </div>
-                  <Badge 
-                    variant={insights?.productivityScore >= 70 ? 'default' : insights?.productivityScore >= 40 ? 'secondary' : 'destructive'}
-                    className="text-xs font-semibold"
-                  >
-                    {insights?.productivityScore || 0}%
-                  </Badge>
-                </div>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
