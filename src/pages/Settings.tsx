@@ -19,7 +19,8 @@ import {
   Smartphone,
   Save,
   Eye,
-  EyeOff
+  EyeOff,
+  AlertTriangle
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -322,6 +323,18 @@ const Settings = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4">
+                <div className="flex items-center gap-2 text-blue-400">
+                  <AlertTriangle className="h-4 w-4" />
+                  <span className="font-medium text-sm">Importante sobre transcrições</span>
+                </div>
+                <p className="text-xs text-blue-300 mt-1">
+                  <strong>Atenção:</strong> Transcrições no privado também consomem IntelliCoins. 
+                  Certifique-se de ter saldo suficiente para usar esta funcionalidade.
+                </p>
+              </div>
+              
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Transcrição Ativa</Label>
