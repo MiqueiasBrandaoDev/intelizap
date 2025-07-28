@@ -310,6 +310,7 @@ export const getInstanceGroups = async (req, res) => {
 
     try {
       console.log('🔄 Fetching groups with retry logic...');
+      console.log('🌐 Full URL:', `${EVOLUTION_API_URL}/group/fetchAllGroups/${instanceName}?getParticipants=false`);
       const response = await fetchWithRetry(`${EVOLUTION_API_URL}/group/fetchAllGroups/${instanceName}?getParticipants=false`, {
         method: 'GET',
         headers: {
