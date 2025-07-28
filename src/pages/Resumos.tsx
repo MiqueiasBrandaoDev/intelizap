@@ -221,7 +221,7 @@ const Resumos = () => {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      {getTimeSince(resumo.data_envio?.toString() || resumo.data_criacao.toString())}
+                      {getTimeSince(resumo.data_envio || resumo.data_criacao)}
                     </span>
                     <span className="flex items-center gap-1">
                       <FileText className="h-4 w-4" />
@@ -243,7 +243,7 @@ const Resumos = () => {
               
               <div className="flex justify-between items-center">
                 <span className="text-xs text-muted-foreground">
-                  {formatDate(resumo.data_envio?.toString() || resumo.data_criacao.toString())}
+                  {formatDate(resumo.data_envio || resumo.data_criacao)}
                 </span>
                 
                 <div className="flex gap-2">
@@ -265,7 +265,7 @@ const Resumos = () => {
                         <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            {formatDate(resumo.data_envio?.toString() || resumo.data_criacao.toString())}
+                            {formatDate(resumo.data_envio || resumo.data_criacao)}
                           </span>
                           <span className="flex items-center gap-1">
                             <FileText className="h-4 w-4" />

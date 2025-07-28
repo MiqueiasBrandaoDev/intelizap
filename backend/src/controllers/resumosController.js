@@ -29,12 +29,12 @@ export const getResumos = async (req, res) => {
     let queryParams = [usuario_id];
 
     if (data_inicio) {
-      whereClause += ' AND r.data_criacao >= ?';
+      whereClause += ' AND r.data_envio >= ?';
       queryParams.push(data_inicio);
     }
 
     if (data_fim) {
-      whereClause += ' AND r.data_criacao <= ?';
+      whereClause += ' AND r.data_envio <= ?';
       queryParams.push(data_fim);
     }
 
@@ -69,7 +69,7 @@ export const getResumos = async (req, res) => {
       FROM resumos r
       JOIN grupos g ON r.grupo_id = g.id
       WHERE r.usuario_id = ${parseInt(usuario_id)}
-      ORDER BY r.data_criacao DESC
+      ORDER BY r.data_envio DESC
       LIMIT ${limitNum} OFFSET ${offset}`;
     
     const [resumos] = await connection.execute(resumosSql);
