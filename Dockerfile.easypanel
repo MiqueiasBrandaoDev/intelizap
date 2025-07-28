@@ -81,7 +81,7 @@ echo "  CORS_ORIGIN: \$CORS_ORIGIN"
 # Iniciar backend e capturar logs
 echo "📡 Starting backend on port 3001..."
 cd /app/backend
-PORT=3001 node src/server.js > /tmp/backend.log 2>&1 &
+PORT=3001 node src/server.js &
 BACKEND_PID=\$!
 
 # Aguardar e monitorar backend
@@ -89,17 +89,14 @@ echo "⏳ Waiting for backend to start..."
 for i in \$(seq 1 30); do
     if nc -z localhost 3001 2>/dev/null; then
         echo "✅ Backend is ready on port 3001"
-        echo "📋 Backend logs:"
-        cat /tmp/backend.log
         break
     fi
     echo "⏱️  Waiting for backend... (\$i/30)"
     sleep 2
     
-    # Mostrar logs se backend morreu
+    # Verificar se backend morreu
     if ! kill -0 \$BACKEND_PID 2>/dev/null; then
-        echo "❌ Backend crashed! Logs:"
-        cat /tmp/backend.log
+        echo "❌ Backend crashed!"
         exit 1
     fi
 done
@@ -107,8 +104,6 @@ done
 # Verificar se conectou
 if ! nc -z localhost 3001 2>/dev/null; then
     echo "❌ Backend not responding on port 3001"
-    echo "📋 Final backend logs:"
-    cat /tmp/backend.log
     exit 1
 fi
 
@@ -154,7 +149,9 @@ fi
 
 echo "🎉 All services started successfully!"
 
-# Aguardar processos
+# Aguardar processos e mostrar logs em tempo real
+echo "📋 Following application logs..."
+tail -f /var/log/nginx/access.log &
 wait
 EOF
 
