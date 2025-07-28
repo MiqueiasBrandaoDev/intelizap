@@ -231,8 +231,8 @@ const Resumos = () => {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      {/* {getTimeSince(resumo.data_envio || resumo.data_criacao)} */}
-                      {getTimeSince(resumo.data_envio)}
+                      {getTimeSince(resumo.data_criacao || resumo.data_envio)}
+                      {/* {getTimeSince(resumo.data_envio)} */}
                     </span>
                     <span className="flex items-center gap-1">
                       <FileText className="h-4 w-4" />
