@@ -278,19 +278,6 @@ export const getInstanceGroups = async (req, res) => {
     console.log('🔧 EVOLUTION_API_URL:', EVOLUTION_API_URL || 'NOT SET');
     console.log('🔑 EVOLUTION_API_KEY present:', !!EVOLUTION_API_KEY);
 
-    // Validate environment variables
-    if (!EVOLUTION_API_URL || EVOLUTION_API_URL === 'http://localhost:8080') {
-      console.log('❌ EVOLUTION_API_URL não configurada');
-      throw new Error('EVOLUTION_API_URL não está configurada');
-    }
-    
-    if (!EVOLUTION_API_KEY || EVOLUTION_API_KEY === 'your-evolution-api-key') {
-      console.log('❌ EVOLUTION_API_KEY não configurada');
-      throw new Error('EVOLUTION_API_KEY não está configurada');
-    }
-
-    console.log('✅ Environment variables OK');
-
     // First check if instance is connected
     const statusController = new AbortController();
     const statusTimeout = setTimeout(() => statusController.abort(), 10000);
