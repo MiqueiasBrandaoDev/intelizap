@@ -256,67 +256,61 @@ export const disconnectInstance = async (req, res) => {
   }
 };
 
+// Helper function to retry fetch with exponential backoff
+const fetchWithRetry = async (url, options, maxRetries = 3) => {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok || response.status < 500) {
+        return response; // Return successful responses or client errors (don't retry 4xx)
+      }
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    } catch (error) {
+      console.log(`🔄 Attempt ${i + 1}/${maxRetries} failed:`, error.message);
+      
+      if (i === maxRetries - 1) {
+        throw error; // Last attempt failed
+      }
+      
+      // Exponential backoff: 1s, 2s, 4s
+      const delay = Math.pow(2, i) * 1000;
+      console.log(`⏳ Waiting ${delay}ms before retry...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+};
+
 export const getInstanceGroups = async (req, res) => {
+  console.log('=== EVOLUTION GROUPS REQUEST START ===');
+  console.log('Time:', new Date().toISOString());
+  
   try {
     const { instanceName } = req.params;
     const { userId } = req.query;
 
+    console.log('📥 Request params:', { instanceName, userId });
+
     if (!userId) {
+      console.log('❌ userId missing');
       return res.status(400).json({
         success: false,
         message: 'userId é obrigatório'
       });
     }
 
-    console.log('👥 Getting groups from Evolution API:', instanceName);
+    console.log('🔧 EVOLUTION_API_URL:', EVOLUTION_API_URL || 'NOT SET');
+    console.log('🔑 EVOLUTION_API_KEY present:', !!EVOLUTION_API_KEY);
 
-    // First check if instance is connected
-    const statusController = new AbortController();
-    const statusTimeout = setTimeout(() => statusController.abort(), 10000);
-    
-    try {
-      const statusResponse = await fetch(`${EVOLUTION_API_URL}/instance/fetchInstances`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': EVOLUTION_API_KEY
-        },
-        signal: statusController.signal
-      });
-      
-      clearTimeout(statusTimeout);
-      
-      if (statusResponse.ok) {
-        const instances = await statusResponse.json();
-        const instance = instances.find(inst => inst.name === instanceName);
-        
-        if (!instance) {
-          return res.status(400).json({
-            success: false,
-            message: 'Instância do WhatsApp não encontrada. Verifique se está conectado.'
-          });
-        }
-        
-        if (instance.connectionStatus !== 'open') {
-          return res.status(400).json({
-            success: false,
-            message: 'WhatsApp não está conectado. Conecte primeiro na aba Conexão.'
-          });
-        }
-        
-        console.log('✅ Instance is connected, fetching groups...');
-      }
-    } catch (statusError) {
-      clearTimeout(statusTimeout);
-      console.warn('⚠️ Could not verify instance status, proceeding anyway:', statusError.message);
-    }
+    // Skip instance status check for now - it's causing issues
+    console.log('⏭️ Skipping instance status check, proceeding directly to fetch groups...');
 
-    // Create AbortController for timeout
+    // Create AbortController for timeout - reduced to 20 seconds
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 300000); // 300 seconds timeout (5 minutes)
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     try {
-      const response = await fetch(`${EVOLUTION_API_URL}/group/fetchAllGroups/${instanceName}?getParticipants=true`, {
+      console.log('🔄 Fetching groups with retry logic...');
+      const response = await fetchWithRetry(`${EVOLUTION_API_URL}/group/fetchAllGroups/${instanceName}?getParticipants=false`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -330,12 +324,6 @@ export const getInstanceGroups = async (req, res) => {
       if (!response.ok) {
         const errorData = await response.text();
         console.error('❌ Evolution API response error:', response.status, response.statusText, errorData);
-        
-        // Handle specific timeout or connection errors
-        if (response.status === 500 && errorData.includes('Timed Out')) {
-          throw new Error('WhatsApp está demorando para responder. Tente novamente em alguns minutos.');
-        }
-        
         throw new Error(`Falha ao buscar grupos: ${response.status} ${response.statusText}`);
       }
 
@@ -358,6 +346,7 @@ export const getInstanceGroups = async (req, res) => {
         descricao: group.desc || null
       }));
 
+      console.log('✅ Groups formatted successfully');
       res.json({
         success: true,
         message: `${groups.length} grupos encontrados`,
@@ -375,17 +364,24 @@ export const getInstanceGroups = async (req, res) => {
     }
 
   } catch (error) {
-    console.error('❌ Get groups error:', error);
-    console.error('❌ Stack trace:', error.stack);
+    console.log('=== EVOLUTION GROUPS ERROR ===');
+    console.log('❌ Error message:', error.message);
+    console.log('❌ Error name:', error.name);
+    console.log('❌ Error stack:', error.stack);
+    console.log('=== END ERROR LOG ===');
     
-    // Send more user-friendly error messages
-    let errorMessage = 'Erro interno do servidor';
+    // Send more detailed error information
+    let errorMessage = 'Não foi possível buscar os grupos. Tente novamente.';
     
     if (error.message.includes('Timeout') || error.message.includes('demorando')) {
-      errorMessage = 'WhatsApp está demorando para responder. Verifique se está conectado e tente novamente.';
-    } else if (error.message.includes('Falha ao buscar grupos')) {
-      errorMessage = 'Não foi possível buscar os grupos. Verifique se o WhatsApp está conectado.';
+      errorMessage = 'WhatsApp está demorando para responder. Tente novamente.';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'Não foi possível conectar com a Evolution API.';
+    } else if (error.name === 'AbortError') {
+      errorMessage = 'Timeout ao buscar grupos. Tente novamente.';
     }
+    
+    console.log('📤 Returning error:', errorMessage);
     
     res.status(500).json({
       success: false,
