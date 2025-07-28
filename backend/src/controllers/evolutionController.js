@@ -304,23 +304,16 @@ export const getInstanceGroups = async (req, res) => {
         const instance = instances.find(inst => inst.name === instanceName);
         
         if (!instance) {
-          console.log('❌ Instance not found:', instanceName);
-          return res.status(400).json({
-            success: false,
-            message: 'Instância do WhatsApp não encontrada. Verifique se está conectado.'
-          });
+          console.log('⚠️ Instance not found in fetchInstances, but continuing...');
+        } else {
+          console.log('✅ Instance found:', instance.name, 'status:', instance.connectionStatus);
+          
+          if (instance.connectionStatus !== 'open') {
+            console.log('⚠️ Instance not connected, but trying to fetch groups anyway...');
+          }
         }
         
-        console.log('✅ Instance found:', instance.name, 'status:', instance.connectionStatus);
-        
-        if (instance.connectionStatus !== 'open') {
-          return res.status(400).json({
-            success: false,
-            message: 'WhatsApp não está conectado. Conecte primeiro na aba Conexão.'
-          });
-        }
-        
-        console.log('✅ Instance is connected, fetching groups...');
+        console.log('🔄 Proceeding to fetch groups...');
       }
     } catch (statusError) {
       clearTimeout(statusTimeout);
@@ -329,10 +322,10 @@ export const getInstanceGroups = async (req, res) => {
 
     // Create AbortController for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 300000); // 300 seconds timeout (5 minutes)
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
 
     try {
-      const response = await fetch(`${EVOLUTION_API_URL}/group/fetchAllGroups/${instanceName}?getParticipants=true`, {
+      const response = await fetch(`${EVOLUTION_API_URL}/group/fetchAllGroups/${instanceName}?getParticipants=false`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
