@@ -88,16 +88,18 @@ const Resumos = () => {
 
   const formatDate = (dateString: string) => {
     if (!dateString) return 'Data não disponível';
-    // Trata a string como datetime local substituindo espaço por T
-    const normalizedDate = dateString.replace(' ', 'T');
-    return new Date(normalizedDate).toLocaleString('pt-BR');
+    // Força interpretação como UTC de São Paulo (-3h)
+    const normalizedDate = dateString.replace(' ', 'T') + '-03:00';
+    return new Date(normalizedDate).toLocaleString('pt-BR', {
+      timeZone: 'America/Sao_Paulo'
+    });
   };
 
   const getTimeSince = (dateString: string) => {
     if (!dateString) return 'Data não disponível';
     const now = new Date();
-    // Trata a string como datetime local substituindo espaço por T
-    const normalizedDate = dateString.replace(' ', 'T');
+    // Força interpretação como UTC de São Paulo (-3h)
+    const normalizedDate = dateString.replace(' ', 'T') + '-03:00';
     const date = new Date(normalizedDate);
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     
