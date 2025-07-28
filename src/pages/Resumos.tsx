@@ -87,12 +87,22 @@ const Resumos = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('pt-BR');
+    // Trata a data como horário local (Brasil) ao invés de UTC
+    const date = new Date(dateString + 'T00:00:00');
+    return date.toLocaleString('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const getTimeSince = (dateString: string) => {
     const now = new Date();
-    const date = new Date(dateString);
+    // Trata a data como horário local (Brasil) ao invés de UTC
+    const date = new Date(dateString + 'T00:00:00');
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     
     if (diffInHours < 1) return 'Agora mesmo';
