@@ -348,9 +348,9 @@ const Grupos = () => {
                         <div className="flex items-center justify-between">
                           <div>
                             <div className="font-medium">{group.nome_grupo}</div>
-                            <div className="text-xs text-muted-foreground">
+                            {/* <div className="text-xs text-muted-foreground">
                               {group.participantes} participantes
-                            </div>
+                            </div> */}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             {group.grupo_id_externo?.slice(0, 8)}...

@@ -149,7 +149,7 @@ export const getInstanceStatus = async (req, res) => {
 
     // First try to get all instances and filter by name
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seconds timeout
+    const timeoutId = setTimeout(() => controller.abort(), 100000); // 15 seconds timeout
     
     const response = await fetch(`${EVOLUTION_API_URL}/instance/fetchInstances`, {
       method: 'GET',
