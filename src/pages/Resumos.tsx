@@ -87,22 +87,14 @@ const Resumos = () => {
   };
 
   const formatDate = (dateString: string) => {
-    // Trata a data como horário local (Brasil) ao invés de UTC
-    const date = new Date(dateString + 'T00:00:00');
-    return date.toLocaleString('pt-BR', {
-      timeZone: 'America/Sao_Paulo',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    if (!dateString) return 'Data não disponível';
+    return new Date(dateString).toLocaleString('pt-BR');
   };
 
   const getTimeSince = (dateString: string) => {
+    if (!dateString) return 'Data não disponível';
     const now = new Date();
-    // Trata a data como horário local (Brasil) ao invés de UTC
-    const date = new Date(dateString + 'T00:00:00');
+    const date = new Date(dateString);
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     
     if (diffInHours < 1) return 'Agora mesmo';
@@ -231,7 +223,7 @@ const Resumos = () => {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      {getTimeSince(resumo.data_criacao || resumo.data_envio)}
+                      {getTimeSince(resumo.data_envio || resumo.data_criacao)}
                       {/* {getTimeSince(resumo.data_envio)} */}
                     </span>
                     <span className="flex items-center gap-1">
