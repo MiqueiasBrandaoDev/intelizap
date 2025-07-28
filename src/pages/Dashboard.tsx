@@ -1,4 +1,16 @@
 import React from 'react';
+
+// Helper function to format dates correctly (avoiding UTC interpretation)
+const formatDateLocal = (dateString: string) => {
+  if (!dateString) return 'Data não disponível';
+  // Força interpretação como horário local ao adicionar 'T00:00:00' se não tiver hora
+  const dateStr = dateString.includes('T') ? dateString : dateString + 'T00:00:00';
+  const date = new Date(dateStr);
+  // Adiciona o offset de timezone para corrigir UTC
+  const offset = date.getTimezoneOffset() * 60000;
+  const localDate = new Date(date.getTime() - offset);
+  return localDate.toLocaleString('pt-BR');
+};
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -163,7 +175,7 @@ const Dashboard = () => {
                       <div>
                         <p className="text-sm font-medium">{activity.grupo_nome}</p>
                         <p className="text-xs text-muted-foreground">
-                          {new Date(activity.data_envio).toLocaleString('pt-BR')}
+                          {formatDateLocal(activity.data_envio)}
                           {activity.total_mensagens && ` • ${activity.total_mensagens} mensagens`}
                         </p>
                       </div>
@@ -274,7 +286,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {new Date(insights.lastResumeTime).toLocaleString('pt-BR')}
+                      {formatDateLocal(insights.lastResumeTime)}
                     </div>
                   </div>
                 )}

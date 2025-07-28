@@ -88,14 +88,25 @@ const Resumos = () => {
 
   const formatDate = (dateString: string) => {
     if (!dateString) return 'Data não disponível';
-    return new Date(dateString).toLocaleString('pt-BR');
+    // Força interpretação como horário local ao adicionar 'T00:00:00' se não tiver hora
+    const dateStr = dateString.includes('T') ? dateString : dateString + 'T00:00:00';
+    const date = new Date(dateStr);
+    // Adiciona o offset de timezone para corrigir UTC
+    const offset = date.getTimezoneOffset() * 60000;
+    const localDate = new Date(date.getTime() - offset);
+    return localDate.toLocaleString('pt-BR');
   };
 
   const getTimeSince = (dateString: string) => {
     if (!dateString) return 'Data não disponível';
     const now = new Date();
-    const date = new Date(dateString);
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    // Força interpretação como horário local
+    const dateStr = dateString.includes('T') ? dateString : dateString + 'T00:00:00';
+    const date = new Date(dateStr);
+    // Adiciona o offset de timezone para corrigir UTC
+    const offset = date.getTimezoneOffset() * 60000;
+    const localDate = new Date(date.getTime() - offset);
+    const diffInHours = Math.floor((now.getTime() - localDate.getTime()) / (1000 * 60 * 60));
     
     if (diffInHours < 1) return 'Agora mesmo';
     if (diffInHours < 24) return `${diffInHours}h atrás`;
