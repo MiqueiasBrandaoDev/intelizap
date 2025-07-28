@@ -300,7 +300,7 @@ const Grupos = () => {
                 <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
                   <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                    <span className="text-sm font-medium">O carregamento dos grupos pode demorar alguns segundos</span>
+                    <span className="text-sm font-medium">O carregamento dos grupos pode demorar alguns minutos</span>
                   </div>
                 </div>
                 {/* Busca nos grupos do WhatsApp */}

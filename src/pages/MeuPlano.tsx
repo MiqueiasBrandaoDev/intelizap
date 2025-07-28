@@ -130,6 +130,17 @@ const MeuPlano = () => {
             </div>
           )}
 
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4">
+            <div className="flex items-center gap-2 text-blue-400">
+              <AlertTriangle className="h-4 w-4" />
+              <span className="font-medium text-sm">Importante sobre transcrições</span>
+            </div>
+            <p className="text-xs text-blue-300 mt-1">
+              <strong>Atenção:</strong> Transcrições no privado também consomem IntelliCoins. 
+              Certifique-se de ter saldo suficiente para usar esta funcionalidade.
+            </p>
+          </div>
+
           <div className="text-xs text-muted-foreground text-center">
             💡 <strong>Cada grupo recebe 105 IntelliCoins</strong> • Usado para gerar resumos com IA
           </div>
