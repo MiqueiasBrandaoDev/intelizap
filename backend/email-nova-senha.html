@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Senha - intellizapp.IA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-text {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        
+        .password-section {
+            background-color: #e8f5e8;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #27ae60;
+            text-align: center;
+        }
+        
+        .password-title {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .password-box {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid #27ae60;
+            box-shadow: 0 2px 10px rgba(39, 174, 96, 0.1);
+        }
+        
+        .password-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .password-value {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            letter-spacing: 2px;
+            word-break: break-all;
+        }
+        
+        .security-warning {
+            background-color: #fff3cd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #ffc107;
+        }
+        
+        .warning-title {
+            font-size: 16px;
+            color: #856404;
+            margin-bottom: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .warning-text {
+            font-size: 14px;
+            color: #856404;
+            margin: 0;
+        }
+        
+        .next-steps {
+            background-color: #e8f4fd;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .steps-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .steps-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .steps-list li {
+            padding: 10px 0;
+            font-size: 15px;
+            color: #555;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .steps-list li:before {
+            content: counter(step);
+            counter-increment: step;
+            position: absolute;
+            left: 0;
+            background-color: #3498db;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .steps-list {
+            counter-reset: step;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .support-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #6c757d;
+            text-align: center;
+        }
+        
+        .support-title {
+            font-size: 16px;
+            color: #495057;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .support-text {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .header,
+            .content,
+            .footer {
+                padding: 20px 15px;
+            }
+            
+            .welcome-title {
+                font-size: 20px;
+            }
+            
+            .password-value {
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">🤖 intellizapp.IA</div>
+            <div class="header-subtitle">Inteligência Artificial para WhatsApp</div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <h1 class="welcome-title">🔐 Nova Senha Gerada</h1>
+                <p class="welcome-text">
+                    Sua solicitação de recuperação de senha foi processada com sucesso. 
+                    Abaixo estão suas novas credenciais de acesso.
+                </p>
+            </div>
+            
+            <!-- Password Section -->
+            <div class="password-section">
+                <h2 class="password-title">🔑 Suas Nova Credenciais</h2>
+                <div class="password-box">
+                    <div class="password-label">Nova Senha:</div>
+                    <div class="password-value">{{NOVA_SENHA}}</div>
+                </div>
+                
+                <div class="security-warning">
+                    <h3 class="warning-title">
+                        ⚠️ Importante - Segurança
+                    </h3>
+                    <p class="warning-text">
+                        <strong>Por motivos de segurança, recomendamos fortemente que você altere esta senha 
+                        assim que fizer login em sua conta.</strong> Acesse "Configurações" → "Alterar Senha" 
+                        para definir uma senha personalizada.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h2 class="steps-title">🚀 Próximos Passos:</h2>
+                <ol class="steps-list">
+                    <li>Acesse a plataforma intellizapp.IA</li>
+                    <li>Faça login com seu email e a nova senha acima</li>
+                    <li>Vá em "Configurações" para alterar sua senha</li>
+                    <li>Defina uma nova senha segura e pessoal</li>
+                    <li>Continue aproveitando todos os recursos da plataforma</li>
+                </ol>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="cta-section">
+                <a href="https://app.intellizapp.com.br" class="cta-button">
+                    🔗 Acessar Plataforma
+                </a>
+            </div>
+            
+            <!-- Support Section -->
+            <div class="support-section">
+                <h3 class="support-title">💬 Precisa de Ajuda?</h3>
+                <p class="support-text">
+                    Se você não solicitou esta alteração de senha ou tem dúvidas, entre em contato 
+                    conosco imediatamente através do e-mail <strong>suporte@intellizapp.com.br</strong>
+                </p>
+            </div>
+            
+            <!-- Additional Info -->
+            <div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 10px;">
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 18px;">📊 Informações:</h3>
+                <table style="width: 100%; font-size: 14px; color: #555;">
+                    <tr>
+                        <td style="padding: 8px 0; font-weight: 600;">Data:</td>
+                        <td style="padding: 8px 0;">{{DATA_RECUPERACAO}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-weight: 600;">Status:</td>
+                        <td style="padding: 8px 0; color: #27ae60; font-weight: 600;">✅ Nova senha ativa</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-text">
+                Esta senha foi gerada automaticamente por motivos de segurança.
+            </p>
+            <p style="font-size: 14px; margin: 15px 0;">
+                📧 <strong>suporte@intellizapp.com.br</strong> | 🌐 <strong>app.intellizapp.com.br</strong>
+            </p>
+            <p style="font-size: 12px; opacity: 0.6; margin-top: 20px;">
+                © 2025 intellizapp.IA - Todos os direitos reservados<br>
+                Se você não solicitou esta alteração, entre em contato conosco imediatamente.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

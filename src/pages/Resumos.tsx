@@ -87,12 +87,70 @@ const Resumos = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('pt-BR');
+    // Parse da string do banco como se fosse horário local
+    let dateStr = dateString;
+    
+    // Se a string não tem fuso horário, tratar como local
+    if (!dateStr.includes('Z') && !dateStr.includes('+') && !dateStr.includes('-', 10)) {
+      dateStr = dateStr.replace('T', ' ').replace(/\.\d{3}$/, '');
+      
+      // Parse manual para evitar qualquer conversão de fuso horário
+      const [datePart, timePart = '00:00:00'] = dateStr.split(' ');
+      const [year, month, day] = datePart.split('-');
+      const [hour, minute, second = '00'] = timePart.split(':');
+      
+      const date = new Date(
+        parseInt(year), 
+        parseInt(month) - 1, 
+        parseInt(day), 
+        parseInt(hour), 
+        parseInt(minute), 
+        parseInt(second)
+      );
+      
+      return date.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+    }
+    
+    // Fallback para strings com fuso horário
+    return new Date(dateStr).toLocaleString('pt-BR');
   };
 
   const getTimeSince = (dateString: string) => {
     const now = new Date();
-    const date = new Date(dateString);
+    let date: Date;
+    
+    // Parse da string do banco como se fosse horário local
+    let dateStr = dateString;
+    
+    // Se a string não tem fuso horário, tratar como local
+    if (!dateStr.includes('Z') && !dateStr.includes('+') && !dateStr.includes('-', 10)) {
+      dateStr = dateStr.replace('T', ' ').replace(/\.\d{3}$/, '');
+      
+      // Parse manual para evitar qualquer conversão de fuso horário
+      const [datePart, timePart = '00:00:00'] = dateStr.split(' ');
+      const [year, month, day] = datePart.split('-');
+      const [hour, minute, second = '00'] = timePart.split(':');
+      
+      date = new Date(
+        parseInt(year), 
+        parseInt(month) - 1, 
+        parseInt(day), 
+        parseInt(hour), 
+        parseInt(minute), 
+        parseInt(second)
+      );
+    } else {
+      // Fallback para strings com fuso horário
+      date = new Date(dateStr);
+    }
+    
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
     
     if (diffInHours < 1) return 'Agora mesmo';
