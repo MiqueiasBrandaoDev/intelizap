@@ -257,36 +257,48 @@ export const disconnectInstance = async (req, res) => {
 };
 
 export const getInstanceGroups = async (req, res) => {
+  // Log inicial sempre será mostrado
+  console.log('=== EVOLUTION GROUPS REQUEST START ===');
+  console.log('Time:', new Date().toISOString());
+  
   try {
     const { instanceName } = req.params;
     const { userId } = req.query;
 
+    console.log('📥 Request params:', { instanceName, userId });
+
     if (!userId) {
+      console.log('❌ userId missing');
       return res.status(400).json({
         success: false,
         message: 'userId é obrigatório'
       });
     }
 
-    console.log('👥 Getting groups from Evolution API:', instanceName);
-    console.log('🔧 EVOLUTION_API_URL:', EVOLUTION_API_URL);
+    console.log('🔧 EVOLUTION_API_URL:', EVOLUTION_API_URL || 'NOT SET');
     console.log('🔑 EVOLUTION_API_KEY present:', !!EVOLUTION_API_KEY);
-    console.log('👤 UserId:', userId);
 
     // Validate environment variables
     if (!EVOLUTION_API_URL || EVOLUTION_API_URL === 'http://localhost:8080') {
-      throw new Error('EVOLUTION_API_URL não está configurada ou está usando valor padrão');
+      console.log('❌ EVOLUTION_API_URL não configurada');
+      throw new Error('EVOLUTION_API_URL não está configurada');
     }
     
     if (!EVOLUTION_API_KEY || EVOLUTION_API_KEY === 'your-evolution-api-key') {
-      throw new Error('EVOLUTION_API_KEY não está configurada ou está usando valor padrão');
+      console.log('❌ EVOLUTION_API_KEY não configurada');
+      throw new Error('EVOLUTION_API_KEY não está configurada');
     }
+
+    console.log('✅ Environment variables OK');
 
     // First check if instance is connected
     const statusController = new AbortController();
     const statusTimeout = setTimeout(() => statusController.abort(), 10000);
     
     try {
+      console.log('🔍 Checking instance status...');
+      console.log('Calling:', `${EVOLUTION_API_URL}/instance/fetchInstances`);
+      
       const statusResponse = await fetch(`${EVOLUTION_API_URL}/instance/fetchInstances`, {
         method: 'GET',
         headers: {
@@ -297,17 +309,22 @@ export const getInstanceGroups = async (req, res) => {
       });
       
       clearTimeout(statusTimeout);
+      console.log('📡 Status response:', statusResponse.status, statusResponse.statusText);
       
       if (statusResponse.ok) {
         const instances = await statusResponse.json();
+        console.log('📱 Instances found:', instances.length);
         const instance = instances.find(inst => inst.name === instanceName);
         
         if (!instance) {
+          console.log('❌ Instance not found:', instanceName);
           return res.status(400).json({
             success: false,
             message: 'Instância do WhatsApp não encontrada. Verifique se está conectado.'
           });
         }
+        
+        console.log('✅ Instance found:', instance.name, 'status:', instance.connectionStatus);
         
         if (instance.connectionStatus !== 'open') {
           return res.status(400).json({
@@ -387,13 +404,15 @@ export const getInstanceGroups = async (req, res) => {
     }
 
   } catch (error) {
-    console.error('❌ Get groups error:', error.message);
-    console.error('❌ Error name:', error.name);
-    console.error('❌ Stack trace:', error.stack);
-    console.error('❌ Full error object:', JSON.stringify(error, null, 2));
+    console.log('=== EVOLUTION GROUPS ERROR ===');
+    console.log('❌ Error message:', error.message);
+    console.log('❌ Error name:', error.name);
+    console.log('❌ Error code:', error.code);
+    console.log('❌ Stack trace:', error.stack);
+    console.log('=== END ERROR LOG ===');
     
     // Send more detailed error information
-    let errorMessage = `Erro interno: ${error.message}`;
+    let errorMessage = error.message;
     
     if (error.message.includes('Timeout') || error.message.includes('demorando')) {
       errorMessage = 'WhatsApp está demorando para responder. Verifique se está conectado e tente novamente.';
@@ -403,12 +422,17 @@ export const getInstanceGroups = async (req, res) => {
       errorMessage = 'Não foi possível conectar com a Evolution API. Verifique se está rodando.';
     } else if (error.name === 'AbortError') {
       errorMessage = 'Timeout ao conectar com Evolution API.';
+    } else if (error.message.includes('EVOLUTION_API_URL')) {
+      errorMessage = 'Evolution API URL não configurada no servidor.';
+    } else if (error.message.includes('EVOLUTION_API_KEY')) {
+      errorMessage = 'Evolution API Key não configurada no servidor.';
     }
+    
+    console.log('📤 Returning error:', errorMessage);
     
     res.status(500).json({
       success: false,
-      message: errorMessage,
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: errorMessage
     });
   }
 };
