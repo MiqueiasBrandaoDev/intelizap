@@ -65,6 +65,13 @@ class ApiService {
     });
   }
 
+  async forgotPassword(email: string): Promise<ApiResponse<{ message: string }>> {
+    return this.request('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
   // Usuario endpoints
   async getUser(id: number): Promise<ApiResponse<Usuario>> {
     return this.request(`/usuarios/${id}`);

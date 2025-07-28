@@ -144,3 +144,74 @@ export const register = async (req, res) => {
     });
   }
 };
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log('🔄 Forgot password request for:', email);
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email é obrigatório'
+      });
+    }
+
+    // Buscar usuário pelo email
+    const users = await query(
+      'SELECT id, email FROM usuarios WHERE email = ?',
+      [email]
+    );
+
+    if (users.length === 0) {
+      // Por segurança, retornar sucesso mesmo se email não existir
+      return res.json({
+        success: true,
+        message: 'Se o email estiver cadastrado, você receberá um link de recuperação.'
+      });
+    }
+
+    const user = users[0];
+    console.log('✅ User found for password reset:', { id: user.id, email: user.email });
+
+    // Chamar webhook com email e id do usuário
+    try {
+      const webhookUrl = 'https://primary-production-70c40.up.railway.app/webhook/c575480c-cf25-467d-98e4-fa1b9055d447';
+      const webhookPayload = {
+        email: user.email,
+        id: user.id
+      };
+
+      console.log('📤 Calling webhook:', webhookPayload);
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(webhookPayload)
+      });
+
+      if (response.ok) {
+        console.log('✅ Webhook called successfully');
+      } else {
+        console.error('❌ Webhook failed:', response.status, response.statusText);
+      }
+    } catch (webhookError) {
+      console.error('❌ Webhook error:', webhookError);
+    }
+
+    // Sempre retornar sucesso
+    res.json({
+      success: true,
+      message: 'Se o email estiver cadastrado, você receberá um link de recuperação.'
+    });
+
+  } catch (error) {
+    console.error('❌ Forgot password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor'
+    });
+  }
+};

@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bot, Mail, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { apiService } from '@/services/api';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -27,19 +28,18 @@ const ForgotPassword = () => {
 
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await apiService.forgotPassword(email);
       
       setSent(true);
       toast({
         title: "Email enviado!",
-        description: "Verifique sua caixa de entrada para redefinir sua senha."
+        description: response.data?.message || "Verifique sua caixa de entrada para redefinir sua senha."
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Erro",
-        description: "Não foi possível enviar o email. Tente novamente."
+        description: error.message || "Não foi possível enviar o email. Tente novamente."
       });
     } finally {
       setLoading(false);
