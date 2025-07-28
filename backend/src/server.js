@@ -67,14 +67,17 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
+console.log('🔧 Registering routes...');
 app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/grupos', gruposRoutes);
 app.use('/api/mensagens', mensagensRoutes);
+console.log('🔧 Registering /api/evolution routes...');
 app.use('/api/evolution', evolutionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/resumos', resumosRoutes);
 app.use('/', healthRoutes);
+console.log('✅ All routes registered');
 
 // 404 handler
 app.use('*', (req, res) => {
