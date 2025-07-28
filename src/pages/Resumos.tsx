@@ -104,9 +104,11 @@ const Resumos = () => {
       const now = new Date();
       const date = new Date(dateString.replace(' ', 'T'));
       const adjustedDate = new Date(date.getTime() + (3 * 60 * 60 * 1000)); // +3h para compensar UTC-3
-      const diffInHours = Math.floor((now.getTime() - adjustedDate.getTime()) / (1000 * 60 * 60));
+      const diffInMinutes = Math.floor((now.getTime() - adjustedDate.getTime()) / (1000 * 60));
+      const diffInHours = Math.floor(diffInMinutes / 60);
       
-      if (diffInHours < 1) return 'Agora mesmo';
+      if (diffInMinutes < 5) return 'Agora mesmo';
+      if (diffInMinutes < 60) return `${diffInMinutes}min atrás`;
       if (diffInHours < 24) return `${diffInHours}h atrás`;
       return `${Math.floor(diffInHours / 24)}d atrás`;
     } catch (error) {
