@@ -243,7 +243,8 @@ const Resumos = () => {
               
               <div className="flex justify-between items-center">
                 <span className="text-xs text-muted-foreground">
-                  {formatDate(resumo.data_envio || resumo.data_criacao)}
+                  {/* {formatDate(resumo.data_envio || resumo.data_criacao)} */}
+                  {formatDate(resumo.data_envio)}
                 </span>
                 
                 <div className="flex gap-2">
