@@ -18,7 +18,7 @@ const ContactForm = () => {
     <div>
       <h2 className="text-2xl font-bold mb-6">Envíenos un Mensaje</h2>
       
-      <form className="space-y-6" onSubmit={handleSubmit}>
+      <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
         <ContactFormField
           id="name"
           name="name"
@@ -72,10 +72,10 @@ const ContactForm = () => {
         
         <ContactFormPrivacyCheck id="privacy" />
         
-        <div>
+        <div className="flex justify-center sm:justify-start">
           <button 
             type="submit" 
-            className="w-full px-6 py-3 bg-exertion-600 hover:bg-exertion-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center"
+            className="w-full sm:w-auto px-6 py-3 bg-exertion-600 hover:bg-exertion-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center min-h-[44px] touch-manipulation"
             disabled={isSubmitting}
           >
             <span>{isSubmitting ? "Enviando..." : "Enviar Mensaje"}</span>

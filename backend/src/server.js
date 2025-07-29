@@ -14,6 +14,7 @@ import evolutionRoutes from './routes/evolution.js';
 import dashboardRoutes from './routes/dashboard.js';
 import resumosRoutes from './routes/resumos.js';
 import healthRoutes from './routes/health.js';
+import adminRoutes from './routes/admin.js';
 
 // Load environment variables
 dotenv.config();
@@ -63,6 +64,7 @@ app.use('/api/mensagens', mensagensRoutes);
 app.use('/api/evolution', evolutionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/resumos', resumosRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/', healthRoutes);
 
 // 404 handler
@@ -111,6 +113,10 @@ const startServer = async () => {
       console.log('  GET  /api/resumos');
       console.log('  POST /api/resumos');
       console.log('  POST /api/resumos/gerar');
+      console.log('  GET  /api/admin/stats');
+      console.log('  GET  /api/admin/users');
+      console.log('  PUT  /api/admin/users/:id/plan');
+      console.log('  GET  /api/admin/logs');
       console.log('');
     });
   } catch (error) {

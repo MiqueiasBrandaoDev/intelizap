@@ -53,8 +53,8 @@ const Dashboard = () => {
       </div>
 
       {/* Status Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="cyber-card">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <Card className="cyber-card min-h-[120px]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total de Grupos</CardTitle>
             <Users className="h-4 w-4 text-primary" />
@@ -73,7 +73,7 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="cyber-card">
+        <Card className="cyber-card min-h-[120px]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Grupos Ativos</CardTitle>
             <Activity className="h-4 w-4 text-secondary" />
@@ -95,7 +95,7 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="cyber-card">
+        <Card className="cyber-card min-h-[120px]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Resumos Enviados</CardTitle>
             <FileText className="h-4 w-4 text-accent" />
@@ -114,7 +114,7 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="cyber-card">
+        <Card className="cyber-card min-h-[120px]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Mensagens Processadas</CardTitle>
             <TrendingUp className="h-4 w-4 text-primary" />
@@ -134,7 +134,7 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Recent Activity */}
         <Card className="cyber-card">
           <CardHeader>
@@ -288,7 +288,7 @@ const Dashboard = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             <div className="flex items-center space-x-3">
               <div className={`
                 w-3 h-3 rounded-full 

@@ -181,7 +181,7 @@ const Settings = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Profile Settings */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="cyber-card">
@@ -192,7 +192,7 @@ const Settings = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="nome">Nome</Label>
                   <Input
@@ -245,14 +245,14 @@ const Settings = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-6 ml-16">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 sm:ml-16">
                   <div className="space-y-2">
                     <Input
                       id="horaResumo"
                       type="time"
                       value={formData.horaResumo}
                       onChange={(e) => handleInputChange('horaResumo', e.target.value)}
-                      className="cyber-border w-40 text-xl font-mono text-center"
+                      className="cyber-border w-full sm:w-40 text-xl font-mono text-center"
                     />
                   </div>
                   
@@ -285,7 +285,7 @@ const Settings = () => {
               <Separator />
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
                   <div className="space-y-0.5">
                     <Label>Resumo do Dia Anterior</Label>
                     <p className="text-sm text-muted-foreground">
@@ -298,7 +298,7 @@ const Settings = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
                   <div className="space-y-0.5">
                     <Label>Modo Lúdico</Label>
                     <p className="text-sm text-muted-foreground">

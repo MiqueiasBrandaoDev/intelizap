@@ -11,7 +11,8 @@ import {
   Menu,
   X,
   Smartphone,
-  Crown
+  Crown,
+  Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -22,16 +23,16 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/auth/login" replace />;
-  }
-
   // Redirecionar usuários sem plano ativo para página Meu Plano
   useEffect(() => {
     if (user && user.plano_ativo !== 1 && location.pathname !== '/dashboard/meu-plano') {
       navigate('/dashboard/meu-plano', { replace: true });
     }
   }, [user, location.pathname, navigate]);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/login" replace />;
+  }
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, requiresActivePlan: true },
@@ -61,8 +62,9 @@ const DashboardLayout = () => {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-card cyber-border transform transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
+        fixed inset-y-0 left-0 z-50 w-64 sm:w-60 lg:w-64 xl:w-72 bg-card cyber-border transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 
+        pb-safe-area-inset-bottom
       `}>
         <div className="flex h-full flex-col">
           {/* Logo */}
@@ -137,10 +139,10 @@ const DashboardLayout = () => {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="lg:pl-64 xl:pl-72">
         {/* Top bar */}
         <div className="sticky top-0 z-30 bg-card/80 backdrop-blur-md border-b border-border">
-          <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+          <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
             <Button
               variant="ghost"
               size="icon"
@@ -151,15 +153,18 @@ const DashboardLayout = () => {
             </Button>
             
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground hidden sm:inline">
                 Instância: <span className="text-foreground font-medium">{user?.instancia}</span>
+              </span>
+              <span className="text-xs text-muted-foreground sm:hidden">
+                {user?.instancia}
               </span>
             </div>
           </div>
         </div>
 
         {/* Page content */}
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-4rem)] pb-safe-area-inset-bottom">
           <Outlet />
         </main>
       </div>
